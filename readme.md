@@ -34,7 +34,7 @@ var wpPot = require('gulp-wp-pot');
 gulp.task('default', function () {
 	return gulp.src('src/file.php')
 		.pipe(wpPot( {
-			context: 'context',
+			domain: 'domain',
 			destFile:'file.pot',
 			package: 'package_name',
 			bugReport: 'http://example.com',
@@ -48,16 +48,16 @@ gulp.task('default', function () {
 
 ## wpPot({options})
 
-- `context`
+- `domain`
 
 	Type: `string`  
 
-	String context to find
+	Domain to retrieve the translated text.
 
 - `destFile` (optional)
 
 	Type: `string`  
-	Default: context.pot
+	Default: domain.pot
 
 	Filename
 
@@ -65,7 +65,7 @@ gulp.task('default', function () {
 - `package` (optional)
 
 	Type: `string`  
-	Default: same as context
+	Default: same as domain
 
 	Package name
 

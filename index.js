@@ -4,7 +4,7 @@ var through     = require('through2');
 var path        = require('path');
 var PluginError = gutil.PluginError;
 
-function findTrans( file, ctx ) {
+function findTrans( file, domain ) {
 	var splited = file.contents.toString().split("\n");
 	var pattern = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\(\s*(['|"]?.*['|"]?)+\s*\)/g;
 	var t       = [];
@@ -21,7 +21,7 @@ function findTrans( file, ctx ) {
 					words = [ words ];
 				}
 				words = words.map( removeDot );
-				if ( words[1] != undefined && ctx == words[words.length - 1] ) {
+				if ( words[1] != undefined && domain == words[words.length - 1] ) {
 					t.push( {
 						found    : m[0],
 						key      : m[1],
@@ -130,15 +130,15 @@ function removeDot( noDot ) {
 function gulpWPpot(opt) {
 
 
-	if ( ! opt.context ) {
+	if ( ! opt.domain ) {
 		this.emit('error', new PluginError('gulp-wp-pot', 'destFile needed !'));
 	}
 
 	if ( ! opt.destFile ) {
-		opt.destFile = opt.context + '.pot';
+		opt.destFile = opt.domain + '.pot';
 	}
 	if ( ! opt.package ) {
-		opt.package = opt.context;
+		opt.package = opt.domain;
 	}
 
 	var buffer   = [];
@@ -158,7 +158,7 @@ function gulpWPpot(opt) {
 		}
 
 		if (file.isBuffer()) {
-			buffer.push( findTrans(file, opt.context ) );
+			buffer.push( findTrans(file, opt.domain ) );
 		}
 
 		cb();
