@@ -129,12 +129,16 @@ function removeDot( noDot ) {
 
 function gulpWPpot(opt) {
 
-	if ( ! opt.destFile ) {
-		this.emit('error', new PluginError('gulp-wp-pot', 'destFile needed !'));
-	}
 
 	if ( ! opt.context ) {
 		this.emit('error', new PluginError('gulp-wp-pot', 'destFile needed !'));
+	}
+
+	if ( ! opt.destFile ) {
+		opt.destFile = opt.context + '.pot';
+	}
+	if ( ! opt.package ) {
+		opt.package = opt.context;
 	}
 
 	var buffer   = [];
@@ -167,14 +171,20 @@ function gulpWPpot(opt) {
 		contents += 'msgid ""\n';
 		contents += 'msgstr ""\n';
 		contents += '"Project-Id-Version: ' + opt.package + '\\n"\n';
-		contents += '"Report-Msgid-Bugs-To: ' + opt.bugReport + '\\n"\n';
+		if ( opt.bugReport ) {
+			contents += '"Report-Msgid-Bugs-To: ' + opt.bugReport + '\\n"\n';
+		}
 		contents += '"MIME-Version: 1.0\\n"\n';
 		contents += '"Content-Type: text/plain; charset=UTF-8\\n"\n';
 		contents += '"Content-Transfer-Encoding: 8bit\\n"\n';
 		contents += '"PO-Revision-Date: ' + year + '-MO-DA HO:MI+ZONE\\n"\n';
 		contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n';
-		contents += '"Last-Translator: ' + opt.lastTranslator + '\\n"\n';
-		contents += '"Language-Team: ' + opt.team + '\\n"\n\n';
+		if ( opt.lastTranslator ) {
+			contents += '"Last-Translator: ' + opt.lastTranslator + '\\n"\n';
+		}
+		if ( opt.team ) {
+			contents += '"Language-Team: ' + opt.team + '\\n"\n\n';
+		}
 
 		//Contents
 		buffer = transToPot(buffer);

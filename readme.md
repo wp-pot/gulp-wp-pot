@@ -1,4 +1,4 @@
-# gulp-wp-pot [![Build Status](https://travis-ci.org/willybahuaud/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/willybahuaud/gulp-wp-pot)
+# gulp-wp-pot
 
 > My Fancy gulp plugin
 
@@ -35,32 +35,44 @@ gulp.task('default', function () {
 
 ### wpPot({options})
 
-#### context
+- `context`
 
-Type: `string`  
+	Type: `string`  
 
-String context to find
+	String context to find
 
-#### destFile (optional)
+- `destFile` (optional)
 
-Type: `string`  
-Default: `context`.pot
+	Type: `string`  
+	Default: context.pot
 
-Filename
+	Filename
 
 
-#### package (optional)
+- `package` (optional)
 
-Type: `string`  
-Default: `context`.pot
+	Type: `string`  
+	Default: same as context
 
-Package name
+	Package name
 
-#### bugReport
+- `bugReport` (optional)
 
-#### lastTranslator
+	Type: `URL`  
 
-#### team
+	URL translatation support
+
+- `lastTranslator` (optional)
+
+	Type: `string`  
+
+	Name and email address of the last translator (ex: `Willy Bahuaud <me@example.com>`)
+
+- `team` (optional)
+
+	Type: `string`  
+
+	Name and email address of the translation team (ex: `Team <team@example.com>`)
 
 ## License
 
