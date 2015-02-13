@@ -14,13 +14,13 @@ $ npm install --save-dev gulp-wp-pot
 
 ```js
 var gulp = require('gulp');
-var WPpot = require('gulp-wp-pot');
+var wpPot = require('gulp-wp-pot');
 
 gulp.task('default', function () {
 	return gulp.src('src/file.php')
-		.pipe(WPpot( {
-			destFile:'file.pot',
+		.pipe(wpPot( {
 			context: 'context',
+			destFile:'file.pot',
 			package: 'package_name',
 			bugReport: 'http://example.com',
 			lastTranslator: 'First Last <mail@example.com>',
@@ -33,17 +33,34 @@ gulp.task('default', function () {
 
 ## API
 
-### WPpot(options)
+### wpPot({options})
 
-#### options
+#### context
 
-##### foo
+Type: `string`  
 
-Type: `boolean`  
-Default: `false`
+String context to find
 
-Lorem ipsum.
+#### destFile (optional)
 
+Type: `string`  
+Default: `context`.pot
+
+Filename
+
+
+#### package (optional)
+
+Type: `string`  
+Default: `context`.pot
+
+Package name
+
+#### bugReport
+
+#### lastTranslator
+
+#### team
 
 ## License
 
