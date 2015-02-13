@@ -1,9 +1,9 @@
 {
-  "name": "gulp-wp-makepot",
+  "name": "gulp-wp-pot",
   "version": "0.0.0",
   "description": "",
   "license": "MIT",
-  "repository": "willybahuaud/gulp-wp-makepot",
+  "repository": "willybahuaud/gulp-wp-pot",
   "author": {
     "name": "Willy Bahuaud",
     "email": "willy@wabeo.fr",
