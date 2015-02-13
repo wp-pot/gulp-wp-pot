@@ -1,12 +1,12 @@
-# gulp-<%= pluginName %> [![Build Status](https://travis-ci.org/<%= githubUsername %>/gulp-<%= pluginName %>.svg?branch=master)](https://travis-ci.org/<%= githubUsername %>/gulp-<%= pluginName %>)
+# gulp-wp-pot [![Build Status](https://travis-ci.org/willybahuaud/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/willybahuaud/gulp-wp-pot)
 
-> My <%= superb %> gulp plugin
+> My Fancy gulp plugin
 
 
 ## Install
 
 ```
-$ npm install --save-dev gulp-<%= pluginName %>
+$ npm install --save-dev gulp-wp-pot
 ```
 
 
@@ -14,11 +14,18 @@ $ npm install --save-dev gulp-<%= pluginName %>
 
 ```js
 var gulp = require('gulp');
-var <%= camelPluginName %> = require('gulp-<%= pluginName %>');
+var WPpot = require('gulp-wp-pot');
 
 gulp.task('default', function () {
-	return gulp.src('src/file.ext')
-		.pipe(<%= camelPluginName %>())
+	return gulp.src('src/file.php')
+		.pipe(WPpot( {
+			destFile:'file.pot',
+			context: 'context',
+			package: 'package_name',
+			bugReport: 'http://example.com',
+			lastTranslator: 'First Last <mail@example.com>',
+			team: 'Team <mail@example.com>'
+		} ))
 		.pipe(gulp.dest('dist'));
 });
 ```
@@ -26,7 +33,7 @@ gulp.task('default', function () {
 
 ## API
 
-### <%= camelPluginName %>(options)
+### WPpot(options)
 
 #### options
 
@@ -40,4 +47,4 @@ Lorem ipsum.
 
 ## License
 
-MIT © [<%= name %>](https://github.com/<%= githubUsername %>)
+MIT © [Willy Bahuaud](https://github.com/willybahuaud)
