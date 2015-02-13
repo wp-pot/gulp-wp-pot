@@ -144,7 +144,6 @@ function gulpWPpot(opt) {
 	var buffer   = [];
 	var destFile = opt.destFile;
 	var destDir  = path.dirname(destFile);
-	var firstFile;
 
 	// creating a stream through which each file will pass
 	var stream = through.obj(function(file, enc, cb) {
@@ -152,10 +151,6 @@ function gulpWPpot(opt) {
 	  		this.emit('error', new PluginError('gulp-wp-pot', 'Streams are not supported!'));
 	  		return cb();
 	  	}
-
-	  	if(!firstFile) {
-			firstFile  = file;
-		}
 
 		if (file.isBuffer()) {
 			buffer.push( findTrans(file, opt.domain ) );
@@ -178,22 +173,22 @@ function gulpWPpot(opt) {
 		contents += '"Content-Type: text/plain; charset=UTF-8\\n"\n';
 		contents += '"Content-Transfer-Encoding: 8bit\\n"\n';
 		contents += '"PO-Revision-Date: ' + year + '-MO-DA HO:MI+ZONE\\n"\n';
-		contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n';
 		if ( opt.lastTranslator ) {
 			contents += '"Last-Translator: ' + opt.lastTranslator + '\\n"\n';
 		}
 		if ( opt.team ) {
 			contents += '"Language-Team: ' + opt.team + '\\n"\n\n';
 		}
+		contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n';
 
 		//Contents
 		buffer = transToPot(buffer);
 		contents += buffer.join('\n');
 
 		var concatenatedFile = new gutil.File({
-			base: firstFile.base,
-			cwd: firstFile.cwd,
-			path: path.join(firstFile.base, destFile),
+			base: path.relative( './', destDir ),
+			cwd: destDir,
+			path: path.join(destDir, destFile),
 			contents: new Buffer(contents)
 		});
 		this.push(concatenatedFile);
