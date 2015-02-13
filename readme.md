@@ -1,6 +1,21 @@
 # gulp-wp-pot
 
-> My Fancy gulp plugin
+##Information
+
+<table>
+<tr> 
+<td>Package</td><td>gulp-wp-pot</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Generate pot files for WordPress plugins and themes.</td>
+</tr>
+<tr>
+<td>Node Version</td>
+<td>>= 0.8</td>
+</tr>
+</table>
+
 
 
 ## Install
@@ -10,7 +25,7 @@ $ npm install --save-dev gulp-wp-pot
 ```
 
 
-## Usage
+## Exemple usage with [Gulp](http://github.com/gulpjs/gulp)
 
 ```js
 var gulp = require('gulp');
@@ -31,9 +46,7 @@ gulp.task('default', function () {
 ```
 
 
-## API
-
-### wpPot({options})
+## wpPot({options})
 
 - `context`
 
