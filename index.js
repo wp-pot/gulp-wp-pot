@@ -6,7 +6,7 @@ var PluginError = gutil.PluginError;
 
 function findTrans( file, domain ) {
 	var splited = file.contents.toString().split("\n");
-	var pattern = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\(\s*(['|"]?.*['|"]?)+\s*\)/g;
+	var pattern = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\(\s*(((['|"]\w*['|"])|(\$\w+))[\,]?\s*)+\s*\)/g;
 	var t       = [];
 	var m;
 
