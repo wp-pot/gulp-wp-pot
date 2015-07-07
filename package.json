@@ -1,19 +1,24 @@
 {
   "name": "gulp-wp-pot",
-  "version": "0.0.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Generate pot-files for WordPress localization",
   "license": "MIT",
-  "repository": "willybahuaud/gulp-wp-pot",
+  "repository": "rasmusbe/gulp-wp-pot",
   "author": {
+    "name": "Rasmus Bengtsson",
+    "email": "gulp-wp-pot@rasmusbengtsson.se",
+    "url": "https://github.com/rasmusbe"
+  },
+  "contributors": [{
     "name": "Willy Bahuaud",
     "email": "willy@wabeo.fr",
     "url": "https://github.com/willybahuaud"
-  },
+  }],
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "index.js"
@@ -25,14 +30,8 @@
     "translation"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.1",
-    "through2": "^0.6.3",
+    "gulp-util": "^3.0.6",
+    "through2": "^2.0.0",
     "path": "^0.11.14"
-  },
-  "devDependencies": {
-    "gulp-util": "^3.0.3",
-    "mocha": "*",
-    "path": "^0.11.14",
-    "through2": "^0.6.3"
   }
 }

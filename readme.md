@@ -38,8 +38,8 @@ gulp.task('default', function () {
 			destFile:'file.pot',
 			package: 'package_name',
 			bugReport: 'http://example.com',
-			lastTranslator: 'First Last <mail@example.com>',
-			team: 'Team <mail@example.com>'
+			lastTranslator: 'John Doe <mail@example.com>',
+			team: 'Team Team <mail@example.com>'
 		} ))
 		.pipe(gulp.dest('dist'));
 });
@@ -48,21 +48,21 @@ gulp.task('default', function () {
 
 ## wpPot({options})
 
-- `domain`
+- `domain` (optional, required if destFile is missing)
 
 	Type: `string`  
 
-	Domain to retrieve the translated text.
+	Domain to retrieve the translated text. All textdomains is included if missing.
 
-- `destFile` (optional)
+- `destFile` (optional, required if domain is missing)
 
 	Type: `string`  
 	Default: domain.pot
 
-	Filename
+	Filename for template file
 
 
-- `package` (optional)
+- `package` (optional, required if domain is missing)
 
 	Type: `string`  
 	Default: same as domain
@@ -79,7 +79,7 @@ gulp.task('default', function () {
 
 	Type: `string`  
 
-	Name and email address of the last translator (ex: `Willy Bahuaud <me@example.com>`)
+	Name and email address of the last translator (ex: `John Doe <me@example.com>`)
 
 - `team` (optional)
 
@@ -89,4 +89,4 @@ gulp.task('default', function () {
 
 ## License
 
-MIT © [Willy Bahuaud](https://github.com/willybahuaud)
+MIT © [Rasmus Bengtsson](https://github.com/rasmus) | Initial work by [Willy Bahuaud](https://github.com/willybahuaud)
