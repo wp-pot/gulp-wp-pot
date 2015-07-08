@@ -16,23 +16,25 @@
 </tr>
 </table>
 
-
+The package gulp-sort is recommended to prevent unnecessary changes in pot-file
 
 ## Install
 
 ```
-$ npm install --save-dev gulp-wp-pot
+$ npm install --save-dev gulp-sort gulp-wp-pot
 ```
 
 
-## Exemple usage with [Gulp](http://github.com/gulpjs/gulp)
+## Example usage with [Gulp](http://github.com/gulpjs/gulp)
 
 ```js
 var gulp = require('gulp');
 var wpPot = require('gulp-wp-pot');
+var sort = require('gulp-sort');
 
 gulp.task('default', function () {
-	return gulp.src('src/file.php')
+	return gulp.src('src/*.php')
+		.pipe(sort())
 		.pipe(wpPot( {
 			domain: 'domain',
 			destFile:'file.pot',
