@@ -5,8 +5,8 @@ var through     = require('through2');
 var path        = require('path');
 var PluginError = gutil.PluginError;
 
-function keyChain( key, functionArgs ) {
-  switch( key ) {
+function keyChain(key, functionArgs) {
+  switch (key) {
     case '__':
     case '_e':
     case 'esc_attr__':
@@ -28,15 +28,15 @@ function keyChain( key, functionArgs ) {
   }
 }
 
-function findTranslations( file, domain ) {
+function findTranslations(file, domain) {
   var lines             = file.contents.toString().split('\n');
   var patternFunctionCalls = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\s*\(/g;
   var translations                 = [];
   var functionCall;
 
-  lines.forEach( function (line, lineNumber) {
-    while ( ( functionCall = patternFunctionCalls.exec(line) ) ) {
-      if ( functionCall[0] ) {
+  lines.forEach(function(line, lineNumber) {
+    while ((functionCall = patternFunctionCalls.exec(line))) {
+      if (functionCall[0]) {
         var functionArgs = [];
         var openParentheses = 1;
         var escaped = false;
@@ -98,97 +98,99 @@ function findTranslations( file, domain ) {
           continue;
         }
 
-        if ( ! domain || domain === functionArgs[functionArgs.length - 1] ) {
-          translations.push( {
-            key    : functionCall[1],
-            functionArgs    : functionArgs,
-            info     : path.relative( './', file.path ) + ':' + ( lineNumber + 1 ),
-            keyChain : keyChain(functionCall[1], functionArgs)
-          } );
+        if (!domain || domain === functionArgs[functionArgs.length - 1]) {
+          translations.push({
+            key: functionCall[1],
+            functionArgs: functionArgs,
+            info: path.relative('./', file.path) + ':' + (lineNumber + 1),
+            keyChain: keyChain(functionCall[1], functionArgs),
+          });
         }
       }
     }
   });
+
   return translations;
 }
 
-function transToPot( orig ) {
+function transToPot(orig) {
   // Merge duplicate
   var buffer = {};
 
-  orig.forEach( function( file ) {
-    file.forEach( function( translation ) {
-      if ( buffer[translation.keyChain] ) {
+  orig.forEach(function(file) {
+    file.forEach(function(translation) {
+      if (buffer[translation.keyChain]) {
         buffer[ translation.keyChain ].info += ', ' + translation.info;
       } else {
         buffer[ translation.keyChain ] = translation;
       }
-    } );
-  } );
+    });
+  });
 
   // Write
   var output = [];
-  if ( buffer ) {
-    for( var el in buffer ) {
+  if (buffer) {
+    for (var el in buffer) {
       if (buffer.hasOwnProperty(el)) {
-        switch( buffer[el].key ) {
+        switch (buffer[el].key) {
           case '__':
           case '_e':
           case 'esc_attr__':
           case 'esc_attr_e':
           case 'esc_html__':
           case 'esc_html_e':
-            output.push( '#: ' + buffer[el].info );
-            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-            output.push( 'msgstr ""\n' );
+            output.push('#: ' + buffer[el].info);
+            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+            output.push('msgstr ""\n');
             break;
           case '_x':
           case '_ex':
           case 'esc_attr_x':
           case 'esc_html_x':
-            output.push( '#: ' + buffer[el].info );
-            output.push( 'msgctxt "' + buffer[el].functionArgs[1] + '"' );
-            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-            output.push( 'msgstr ""\n' );
+            output.push('#: ' + buffer[el].info);
+            output.push('msgctxt "' + buffer[el].functionArgs[1] + '"');
+            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+            output.push('msgstr ""\n');
             break;
           case '_n':
           case '_n_noop':
-            output.push( '#: ' + buffer[el].info );
-            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-            output.push( 'msgid_plural "' + buffer[el].functionArgs[1] + '"' );
-            output.push( 'msgstr[0] ""' );
-            output.push( 'msgstr[1] ""\n' );
+            output.push('#: ' + buffer[el].info);
+            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+            output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
+            output.push('msgstr[0] ""');
+            output.push('msgstr[1] ""\n');
             break;
           case '_nx':
           case '_nx_noop':
-            output.push( '#: ' + buffer[el].info );
-            output.push( 'msgctxt "' + buffer[el].functionArgs[3] + '"' );
-            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-            output.push( 'msgid_plural "' + buffer[el].functionArgs[1] + '"' );
-            output.push( 'msgstr[0] ""' );
-            output.push( 'msgstr[1] ""\n' );
+            output.push('#: ' + buffer[el].info);
+            output.push('msgctxt "' + buffer[el].functionArgs[3] + '"');
+            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+            output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
+            output.push('msgstr[0] ""');
+            output.push('msgstr[1] ""\n');
             break;
         }
       }
     }
   }
+
   return output;
 }
 
 function gulpWPpot(options) {
-  if ( ! options.domain && ! options.destFile ) {
+  if (!options.domain && !options.destFile) {
     throw new PluginError('gulp-wp-pot', 'destFile or domain is needed !');
   }
 
-  if ( ! options.destFile ) {
+  if (!options.destFile) {
     options.destFile = options.domain + '.pot';
   }
 
-  if ( ! options.domain && ! options.package ) {
+  if (!options.domain && !options.package) {
     throw new PluginError('gulp-wp-pot', 'package name or domain is needed !');
   }
 
-  if ( ! options.package ) {
+  if (!options.package) {
     options.package = options.domain;
   }
 
@@ -203,14 +205,14 @@ function gulpWPpot(options) {
     }
 
     if (file.isBuffer()) {
-      var translations = findTranslations(file, options.domain );
+      var translations = findTranslations(file, options.domain);
       if (translations.length > 0) {
-        buffer.push( translations );
+        buffer.push(translations);
       }
     }
 
     cb();
-  }, function( cb ) {
+  }, function(cb) {
 
     //Headers
     var year = new Date().getFullYear();
@@ -219,19 +221,24 @@ function gulpWPpot(options) {
     contents += 'msgid ""\n';
     contents += 'msgstr ""\n';
     contents += '"Project-Id-Version: ' + options.package + '\\n"\n';
-    if ( options.bugReport ) {
+
+    if (options.bugReport) {
       contents += '"Report-Msgid-Bugs-To: ' + options.bugReport + '\\n"\n';
     }
+
     contents += '"MIME-Version: 1.0\\n"\n';
     contents += '"Content-Type: text/plain; charset=UTF-8\\n"\n';
     contents += '"Content-Transfer-Encoding: 8bit\\n"\n';
     contents += '"PO-Revision-Date: ' + year + '-MO-DA HO:MI+ZONE\\n"\n';
-    if ( options.lastTranslator ) {
+
+    if (options.lastTranslator) {
       contents += '"Last-Translator: ' + options.lastTranslator + '\\n"\n';
     }
-    if ( options.team ) {
+
+    if (options.team) {
       contents += '"Language-Team: ' + options.team + '\\n"\n\n';
     }
+
     contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\n"\n\n';
 
     //Contents
@@ -239,14 +246,14 @@ function gulpWPpot(options) {
     contents += buffer.join('\n');
 
     var concatenatedFile = new gutil.File({
-      base: path.relative( './', destDir ),
+      base: path.relative('./', destDir),
       cwd: destDir,
       path: path.join(destDir, destFile),
-      contents: new Buffer(contents)
+      contents: new Buffer(contents),
     });
     this.push(concatenatedFile);
     cb();
-  } );
+  });
 
   return stream;
 }

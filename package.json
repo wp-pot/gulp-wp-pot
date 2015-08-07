@@ -18,7 +18,9 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "jshint index.js"
+    "test": "npm run test-jshint && npm run test-jscs",
+    "test-jshint": "jshint index.js",
+    "test-jscs": "jscs index.js"
   },
   "files": [
     "index.js"
