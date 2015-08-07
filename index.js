@@ -5,6 +5,29 @@ var through     = require('through2');
 var path        = require('path');
 var PluginError = gutil.PluginError;
 
+function keyChain( key, functionArgs ) {
+  switch( key ) {
+    case '__':
+    case '_e':
+    case 'esc_attr__':
+    case 'esc_attr_e':
+    case 'esc_html__':
+    case 'esc_html_e':
+      return 'simple_' + functionArgs[0];
+    case '_x':
+    case '_ex':
+    case 'esc_attr_x':
+    case 'esc_html_x':
+      return 'context_' + functionArgs[1] +  functionArgs[0];
+    case '_n':
+    case '_n_noop':
+      return 'multiple_' + functionArgs[1] + functionArgs[0];
+    case '_nx':
+    case '_nx_noop':
+      return 'multiple_' + functionArgs[2] + functionArgs[1] + functionArgs[0];
+  }
+}
+
 function findTranslations( file, domain ) {
   var lines             = file.contents.toString().split('\n');
   var patternFunctionCalls = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\s*\(/g;
@@ -75,7 +98,7 @@ function findTranslations( file, domain ) {
           continue;
         }
 
-        if ( ! domain || domain == functionArgs[functionArgs.length - 1] ) {
+        if ( ! domain || domain === functionArgs[functionArgs.length - 1] ) {
           translations.push( {
             key    : functionCall[1],
             functionArgs    : functionArgs,
@@ -87,29 +110,6 @@ function findTranslations( file, domain ) {
     }
   });
   return translations;
-}
-
-function keyChain( key, functionArgs ) {
-  switch( key ) {
-    case '__':
-    case '_e':
-    case 'esc_attr__':
-    case 'esc_attr_e':
-    case 'esc_html__':
-    case 'esc_html_e':
-      return 'simple_' + functionArgs[0];
-    case '_x':
-    case '_ex':
-    case 'esc_attr_x':
-    case 'esc_html_x':
-      return 'context_' + functionArgs[1] +  functionArgs[0];
-    case '_n':
-    case '_n_noop':
-      return 'multiple_' + functionArgs[1] + functionArgs[0];
-    case '_nx':
-    case '_nx_noop':
-      return 'multiple_' + functionArgs[2] + functionArgs[1] + functionArgs[0];
-  }
 }
 
 function transToPot( orig ) {
@@ -130,43 +130,45 @@ function transToPot( orig ) {
   var output = [];
   if ( buffer ) {
     for( var el in buffer ) {
-      switch( buffer[el].key ) {
-        case '__':
-        case '_e':
-        case 'esc_attr__':
-        case 'esc_attr_e':
-        case 'esc_html__':
-        case 'esc_html_e':
-          output.push( '#: ' + buffer[el].info );
-          output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-          output.push( 'msgstr ""\n' );
-          break;
-        case '_x':
-        case '_ex':
-        case 'esc_attr_x':
-        case 'esc_html_x':
-          output.push( '#: ' + buffer[el].info );
-          output.push( 'msgctxt "' + buffer[el].functionArgs[1] + '"' );
-          output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-          output.push( 'msgstr ""\n' );
-          break;
-        case '_n':
-        case '_n_noop':
-          output.push( '#: ' + buffer[el].info );
-          output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-          output.push( 'msgid_plural "' + buffer[el].functionArgs[1] + '"' );
-          output.push( 'msgstr[0] ""' );
-          output.push( 'msgstr[1] ""\n' );
-          break;
-        case '_nx':
-        case '_nx_noop':
-          output.push( '#: ' + buffer[el].info );
-          output.push( 'msgctxt "' + buffer[el].functionArgs[3] + '"' );
-          output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
-          output.push( 'msgid_plural "' + buffer[el].functionArgs[1] + '"' );
-          output.push( 'msgstr[0] ""' );
-          output.push( 'msgstr[1] ""\n' );
-          break;
+      if (buffer.hasOwnProperty(el)) {
+        switch( buffer[el].key ) {
+          case '__':
+          case '_e':
+          case 'esc_attr__':
+          case 'esc_attr_e':
+          case 'esc_html__':
+          case 'esc_html_e':
+            output.push( '#: ' + buffer[el].info );
+            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
+            output.push( 'msgstr ""\n' );
+            break;
+          case '_x':
+          case '_ex':
+          case 'esc_attr_x':
+          case 'esc_html_x':
+            output.push( '#: ' + buffer[el].info );
+            output.push( 'msgctxt "' + buffer[el].functionArgs[1] + '"' );
+            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
+            output.push( 'msgstr ""\n' );
+            break;
+          case '_n':
+          case '_n_noop':
+            output.push( '#: ' + buffer[el].info );
+            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
+            output.push( 'msgid_plural "' + buffer[el].functionArgs[1] + '"' );
+            output.push( 'msgstr[0] ""' );
+            output.push( 'msgstr[1] ""\n' );
+            break;
+          case '_nx':
+          case '_nx_noop':
+            output.push( '#: ' + buffer[el].info );
+            output.push( 'msgctxt "' + buffer[el].functionArgs[3] + '"' );
+            output.push( 'msgid "' + buffer[el].functionArgs[0] + '"' );
+            output.push( 'msgid_plural "' + buffer[el].functionArgs[1] + '"' );
+            output.push( 'msgstr[0] ""' );
+            output.push( 'msgstr[1] ""\n' );
+            break;
+        }
       }
     }
   }
