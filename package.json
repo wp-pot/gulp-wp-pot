@@ -18,9 +18,10 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "npm run test-jshint && npm run test-jscs",
+    "test": "npm run test-mocha && npm run test-jshint && npm run test-jscs",
     "test-jshint": "jshint index.js",
-    "test-jscs": "jscs index.js"
+    "test-jscs": "jscs index.js",
+    "test-mocha": "mocha"
   },
   "files": [
     "index.js"
@@ -31,6 +32,9 @@
     "wordpress",
     "translation"
   ],
+  "devDependencies": {
+    "mocha": "*"
+  },
   "dependencies": {
     "gulp-util": "^3.0.6",
     "through2": "^2.0.0",

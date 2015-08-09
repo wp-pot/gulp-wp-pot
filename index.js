@@ -98,11 +98,13 @@ function findTranslations(file, domain) {
           continue;
         }
 
+        var filePath = file.path === undefined ? domain + '.pot' : file.path;
+
         if (!domain || domain === functionArgs[functionArgs.length - 1]) {
           translations.push({
             key: functionCall[1],
             functionArgs: functionArgs,
-            info: path.relative('./', file.path) + ':' + (lineNumber + 1),
+            info: path.relative('./', filePath) + ':' + (lineNumber + 1),
             keyChain: keyChain(functionCall[1], functionArgs),
           });
         }
@@ -177,17 +179,21 @@ function transToPot(orig) {
   return output;
 }
 
+function isObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+}
+
 function gulpWPpot(options) {
-  if (!options.domain && !options.destFile) {
-    throw new PluginError('gulp-wp-pot', 'destFile or domain is needed !');
+  if (options === undefined || !isObject(options)) {
+    throw new PluginError('gulp-wp-pot', 'Require a argument of type object.');
+  }
+
+  if (!options.domain) {
+    throw new PluginError('gulp-wp-pot', 'Domain option is required.');
   }
 
   if (!options.destFile) {
     options.destFile = options.domain + '.pot';
-  }
-
-  if (!options.domain && !options.package) {
-    throw new PluginError('gulp-wp-pot', 'package name or domain is needed !');
   }
 
   if (!options.package) {
@@ -200,8 +206,9 @@ function gulpWPpot(options) {
 
   // creating a stream through which each file will pass
   var stream = through.obj(function(file, enc, cb) {
+
     if (file.isStream()) {
-      throw new PluginError('gulp-wp-pot', 'Streams are not supported !');
+      throw new PluginError('gulp-wp-pot', 'Streams are not supported.');
     }
 
     if (file.isBuffer()) {
