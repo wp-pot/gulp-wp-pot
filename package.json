@@ -9,18 +9,21 @@
     "email": "gulp-wp-pot@rasmusbengtsson.se",
     "url": "https://github.com/rasmusbe"
   },
-  "contributors": [{
-    "name": "Willy Bahuaud",
-    "email": "willy@wabeo.fr",
-    "url": "https://github.com/willybahuaud"
-  }],
+  "contributors": [
+    {
+      "name": "Willy Bahuaud",
+      "email": "willy@wabeo.fr",
+      "url": "https://github.com/willybahuaud"
+    }
+  ],
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "npm run test-jshint && npm run test-jscs",
+    "test": "npm run test-mocha && npm run test-jshint && npm run test-jscs",
     "test-jshint": "jshint index.js",
-    "test-jscs": "jscs index.js"
+    "test-jscs": "jscs index.js",
+    "test-mocha": "mocha"
   },
   "files": [
     "index.js"
@@ -31,9 +34,14 @@
     "wordpress",
     "translation"
   ],
+  "devDependencies": {
+    "jscs": "^2.0.0",
+    "jshint": "^2.8.0",
+    "mocha": "^2.2.5",
+    "vinyl": "^0.5.1"
+  },
   "dependencies": {
     "gulp-util": "^3.0.6",
-    "through2": "^2.0.0",
-    "path": "^0.11.14"
+    "through2": "^2.0.0"
   }
 }
