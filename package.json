@@ -1,6 +1,6 @@
 {
   "name": "gulp-wp-pot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generate pot-files for WordPress localization",
   "license": "MIT",
   "repository": "rasmusbe/gulp-wp-pot",
@@ -14,6 +14,10 @@
       "name": "Willy Bahuaud",
       "email": "willy@wabeo.fr",
       "url": "https://github.com/willybahuaud"
+    },
+    {
+      "name": "Fredrik Forsmo",
+      "url": "https://github.com/frozzare"
     }
   ],
   "engines": {
