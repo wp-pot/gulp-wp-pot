@@ -102,4 +102,48 @@ describe('generate tests', function () {
     stream.write(testFile);
     stream.end();
   });
+
+  it ('should generate a pot file with custom headers from php file with headers set', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _x( "Name", "the name", "test" );  ?>')
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>',
+      headers: {
+        'Hello-World': 'This is a test'
+      }
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('Hello-World: This is a test\\n') !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file without default headers from php file with headers false', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _x( "Name", "the name", "test" );  ?>')
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>',
+      headers: false
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('X-Poedit-KeywordsList') === -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
 });

@@ -91,6 +91,13 @@ gulp.task('default', function () {
 
 	Name and email address of the translation team (ex: `Team <team@example.com>`)
 
+- `headers` (optional)
+
+	Type: `object|bool`  
+
+	Object containing extra POT-file headers. Set to false to not generate default extra headers for Poedit.
+
+
 ## License
 
 MIT © [Rasmus Bengtsson](https://github.com/rasmus) | Initial work by [Willy Bahuaud](https://github.com/willybahuaud)
