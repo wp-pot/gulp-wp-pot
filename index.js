@@ -115,8 +115,8 @@ function findTranslations(file, domain) {
   return translations;
 }
 
-function transToPot(orig) {
-  // Merge duplicate
+function uniqueTranslations(orig) {
+  // Merge duplicate translations, add source path to info
   var buffer = {};
 
   orig.forEach(function(file) {
@@ -129,11 +129,18 @@ function transToPot(orig) {
     });
   });
 
-  // Write
+  return buffer;
+}
+
+function translationToPot(buffer) {
+  // Write translation rows
   var output = [];
+
   if (buffer) {
     for (var el in buffer) {
       if (buffer.hasOwnProperty(el)) {
+
+        // Use different syntax for different type of translations
         switch (buffer[el].key) {
           case '__':
           case '_e':
@@ -145,6 +152,7 @@ function transToPot(orig) {
             output.push('msgid "' + buffer[el].functionArgs[0] + '"');
             output.push('msgstr ""\n');
             break;
+
           case '_x':
           case '_ex':
           case 'esc_attr_x':
@@ -154,6 +162,7 @@ function transToPot(orig) {
             output.push('msgid "' + buffer[el].functionArgs[0] + '"');
             output.push('msgstr ""\n');
             break;
+
           case '_n':
           case '_n_noop':
             output.push('#: ' + buffer[el].info);
@@ -162,6 +171,7 @@ function transToPot(orig) {
             output.push('msgstr[0] ""');
             output.push('msgstr[1] ""\n');
             break;
+
           case '_nx':
           case '_nx_noop':
             output.push('#: ' + buffer[el].info);
@@ -269,7 +279,8 @@ function gulpWPpot(options) {
     contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\n"\n\n';
 
     //Contents
-    buffer = transToPot(buffer);
+    buffer = uniqueTranslations(buffer);
+    buffer = translationToPot(buffer);
     contents += buffer.join('\n');
 
     var concatenatedFile = new gutil.File({
