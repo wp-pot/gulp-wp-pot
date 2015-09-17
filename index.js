@@ -5,36 +5,28 @@ var through     = require('through2');
 var path        = require('path');
 var PluginError = gutil.PluginError;
 
-function isSingular(key) {
-  return /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e)/.test(key);
-}
-
-function isSingularWithContext(key) {
-  return /(_x|_ex|esc_attr_x|esc_html_x)/.test(key);
-}
-
 function isPlural(key) {
-  return /(_n|_n_noop)/.test(key);
+  return /(_n|_n_noop|_nx|_nx_noop)/.test(key);
 }
 
-function isPluralWithContext(key) {
-  return /(_nx|_nx_noop)/.test(key);
+function hasContext(key) {
+  return /(_x|_ex|esc_attr_x|esc_html_x|_nx|_nx_noop)/.test(key);
 }
 
 function keyChain(key, functionArgs) {
-  if (isSingular(key)) {
+  if (!isPlural(key) && !hasContext(key)) {
     return 'simple_' + functionArgs[0];
   }
 
-  if (isSingularWithContext(key)) {
+  if (!isPlural(key) && hasContext(key)) {
     return 'context_' + functionArgs[1] +  functionArgs[0];
   }
 
-  if (isPlural(key)) {
+  if (isPlural(key) && !hasContext(key)) {
     return 'multiple_' + functionArgs[1] + functionArgs[0];
   }
 
-  if (isPluralWithContext(key)) {
+  if (isPlural(key) && hasContext(key)) {
     return 'multiple_' + functionArgs[2] + functionArgs[1] + functionArgs[0];
   }
 }
@@ -152,29 +144,22 @@ function translationToPot(buffer) {
       if (buffer.hasOwnProperty(el)) {
         var key = buffer[el].key;
 
-        // Use different syntax for different type of translations
-        if (isSingular(key)) {
-          output.push('#: ' + buffer[el].info);
-          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-          output.push('msgstr ""\n');
-        } else if (isSingularWithContext(key)) {
-          output.push('#: ' + buffer[el].info);
+        output.push('#: ' + buffer[el].info);
+
+        if (!isPlural(key) && hasContext(key)) {
           output.push('msgctxt "' + buffer[el].functionArgs[1] + '"');
-          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-          output.push('msgstr ""\n');
-        } else if (isPlural(key)) {
-          output.push('#: ' + buffer[el].info);
-          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-          output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
-          output.push('msgstr[0] ""');
-          output.push('msgstr[1] ""\n');
-        } else if (isPluralWithContext(key)) {
-          output.push('#: ' + buffer[el].info);
+        } else if (isPlural(key) && hasContext(key)) {
           output.push('msgctxt "' + buffer[el].functionArgs[3] + '"');
-          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+        }
+
+        output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+
+        if (isPlural(key)) {
           output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
           output.push('msgstr[0] ""');
           output.push('msgstr[1] ""\n');
+        } else {
+          output.push('msgstr ""\n');
         }
       }
     }

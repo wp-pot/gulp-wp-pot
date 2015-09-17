@@ -43,13 +43,15 @@ describe('generate tests', function () {
     });
     stream.once('data', function (file) {
       assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgid \"Name\"\n") !== -1);
       done();
     });
     stream.write(testFile);
     stream.end();
   });
 
-  it ('should generate a pot file from php file with more options', function (done) {
+  it ('should generate a pot file from php file with context', function (done) {
     var testFile = new File({
       contents: new Buffer('<?php _x( "Name", "the name", "test" );  ?>')
     });
@@ -61,13 +63,15 @@ describe('generate tests', function () {
     });
     stream.once('data', function (file) {
       assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgctxt \"the name\"\n") !== -1);
       done();
     });
     stream.write(testFile);
     stream.end();
   });
 
-  it ('should generate a pot file from php file with _n', function (done) {
+  it ('should generate a pot file from php file with plural', function (done) {
     var testFile = new File({
       contents: new Buffer('<?php sprintf( _n( "%s star", "%s stars", 3, "test" ), 3 ); ?>')
     });
@@ -79,13 +83,15 @@ describe('generate tests', function () {
     });
     stream.once('data', function (file) {
       assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
       done();
     });
     stream.write(testFile);
     stream.end();
   });
 
-  it ('should generate a pot file from php file with _nx', function (done) {
+  it ('should generate a pot file from php file with plural and context', function (done) {
     var testFile = new File({
       contents: new Buffer('<?php sprintf( _nx( "%s star", "%s stars", 3, "stars translation", "test" ), 3 ); ?>')
     });
@@ -97,6 +103,9 @@ describe('generate tests', function () {
     });
     stream.once('data', function (file) {
       assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgctxt \"stars translation\"\n") !== -1);
+      assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
       done();
     });
     stream.write(testFile);
