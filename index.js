@@ -5,26 +5,37 @@ var through     = require('through2');
 var path        = require('path');
 var PluginError = gutil.PluginError;
 
+function isSingular(key) {
+  return /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e)/.test(key);
+}
+
+function isSingularWithContext(key) {
+  return /(_x|_ex|esc_attr_x|esc_html_x)/.test(key);
+}
+
+function isPlural(key) {
+  return /(_n|_n_noop)/.test(key);
+}
+
+function isPluralWithContext(key) {
+  return /(_nx|_nx_noop)/.test(key);
+}
+
 function keyChain(key, functionArgs) {
-  switch (key) {
-    case '__':
-    case '_e':
-    case 'esc_attr__':
-    case 'esc_attr_e':
-    case 'esc_html__':
-    case 'esc_html_e':
-      return 'simple_' + functionArgs[0];
-    case '_x':
-    case '_ex':
-    case 'esc_attr_x':
-    case 'esc_html_x':
-      return 'context_' + functionArgs[1] +  functionArgs[0];
-    case '_n':
-    case '_n_noop':
-      return 'multiple_' + functionArgs[1] + functionArgs[0];
-    case '_nx':
-    case '_nx_noop':
-      return 'multiple_' + functionArgs[2] + functionArgs[1] + functionArgs[0];
+  if (isSingular(key)) {
+    return 'simple_' + functionArgs[0];
+  }
+
+  if (isSingularWithContext(key)) {
+    return 'context_' + functionArgs[1] +  functionArgs[0];
+  }
+
+  if (isPlural(key)) {
+    return 'multiple_' + functionArgs[1] + functionArgs[0];
+  }
+
+  if (isPluralWithContext(key)) {
+    return 'multiple_' + functionArgs[2] + functionArgs[1] + functionArgs[0];
   }
 }
 
@@ -139,48 +150,31 @@ function translationToPot(buffer) {
   if (buffer) {
     for (var el in buffer) {
       if (buffer.hasOwnProperty(el)) {
+        var key = buffer[el].key;
 
         // Use different syntax for different type of translations
-        switch (buffer[el].key) {
-          case '__':
-          case '_e':
-          case 'esc_attr__':
-          case 'esc_attr_e':
-          case 'esc_html__':
-          case 'esc_html_e':
-            output.push('#: ' + buffer[el].info);
-            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-            output.push('msgstr ""\n');
-            break;
-
-          case '_x':
-          case '_ex':
-          case 'esc_attr_x':
-          case 'esc_html_x':
-            output.push('#: ' + buffer[el].info);
-            output.push('msgctxt "' + buffer[el].functionArgs[1] + '"');
-            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-            output.push('msgstr ""\n');
-            break;
-
-          case '_n':
-          case '_n_noop':
-            output.push('#: ' + buffer[el].info);
-            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-            output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
-            output.push('msgstr[0] ""');
-            output.push('msgstr[1] ""\n');
-            break;
-
-          case '_nx':
-          case '_nx_noop':
-            output.push('#: ' + buffer[el].info);
-            output.push('msgctxt "' + buffer[el].functionArgs[3] + '"');
-            output.push('msgid "' + buffer[el].functionArgs[0] + '"');
-            output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
-            output.push('msgstr[0] ""');
-            output.push('msgstr[1] ""\n');
-            break;
+        if (isSingular(key)) {
+          output.push('#: ' + buffer[el].info);
+          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+          output.push('msgstr ""\n');
+        } else if (isSingularWithContext(key)) {
+          output.push('#: ' + buffer[el].info);
+          output.push('msgctxt "' + buffer[el].functionArgs[1] + '"');
+          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+          output.push('msgstr ""\n');
+        } else if (isPlural(key)) {
+          output.push('#: ' + buffer[el].info);
+          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+          output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
+          output.push('msgstr[0] ""');
+          output.push('msgstr[1] ""\n');
+        } else if (isPluralWithContext(key)) {
+          output.push('#: ' + buffer[el].info);
+          output.push('msgctxt "' + buffer[el].functionArgs[3] + '"');
+          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+          output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
+          output.push('msgstr[0] ""');
+          output.push('msgstr[1] ""\n');
         }
       }
     }
