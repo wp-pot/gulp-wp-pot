@@ -2,7 +2,7 @@
 
 ## Information
 
-[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/55c46add6537620020002f3c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c46add6537620020002f3c)
+[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/55c46add6537620020002f3c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c46add6537620020002f3c) [![Code Climate](https://codeclimate.com/github/rasmusbe/gulp-wp-pot/badges/gpa.svg)](https://codeclimate.com/github/rasmusbe/gulp-wp-pot)
 
 <table>
 <tr> 
