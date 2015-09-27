@@ -43,7 +43,7 @@
     "jscs": "^2.0.0",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5",
-    "vinyl": "^0.5.1"
+    "vinyl": "^1.0.0"
   },
   "dependencies": {
     "gulp-util": "^3.0.6",
