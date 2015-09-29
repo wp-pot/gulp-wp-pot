@@ -5,14 +5,36 @@ var through     = require('through2');
 var path        = require('path');
 var PluginError = gutil.PluginError;
 
+/**
+ * Determine if `key` is plural or not.
+ *
+ * @param  {string}  key
+ *
+ * @return {boolean}
+ */
 function isPlural(key) {
   return /(_n|_n_noop|_nx|_nx_noop)/.test(key);
 }
 
+/**
+ * Determine if `key` has context or not.
+ *
+ * @param  {string}  key
+ *
+ * @return {boolean}
+ */
 function hasContext(key) {
   return /(_x|_ex|esc_attr_x|esc_html_x|_nx|_nx_noop)/.test(key);
 }
 
+/**
+ * Get key chain.
+ *
+ * @param  {string} key
+ * @param  {array}  functionArgs
+
+ * @return {string|undefined}
+ */
 function keyChain(key, functionArgs) {
   if (!isPlural(key) && !hasContext(key)) {
     return 'simple_' + functionArgs[0];
@@ -31,6 +53,14 @@ function keyChain(key, functionArgs) {
   }
 }
 
+/**
+ * Find translations in files.
+ *
+ * @param  {string} file
+ * @param  {string} domain
+ *
+ * @return {array}
+ */
 function findTranslations(file, domain) {
   var lines             = file.contents.toString().split('\n');
   var patternFunctionCalls = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\s*\(/g;
@@ -118,8 +148,15 @@ function findTranslations(file, domain) {
   return translations;
 }
 
+/**
+ * Find unique translations.
+ *
+ * @param  {array} orig
+ *
+ * @return {array}
+ */
 function uniqueTranslations(orig) {
-  // Merge duplicate translations, add source path to info
+  // Merge duplicate translations, add source path to info.
   var buffer = {};
 
   orig.forEach(function(file) {
@@ -135,8 +172,15 @@ function uniqueTranslations(orig) {
   return buffer;
 }
 
+/**
+ * Write translation to array with pot format.
+ *
+ * @param  {array} buffer
+ *
+ * @return {array}
+ */
 function translationToPot(buffer) {
-  // Write translation rows
+  // Write translation rows.
   var output = [];
 
   if (buffer) {
@@ -168,10 +212,24 @@ function translationToPot(buffer) {
   return output;
 }
 
+/**
+ * Determine if `obj` is a object or not.
+ *
+ * @param  {object}  obj
+ *
+ * @return {boolean}
+ */
 function isObject(obj) {
   return Object.prototype.toString.call(obj) === '[object Object]';
 }
 
+/**
+ * Run the wp pot generator.
+ *
+ * @param  {object} options
+ *
+ * @return {object}
+ */
 function gulpWPpot(options) {
   if (options === undefined || !isObject(options)) {
     throw new PluginError('gulp-wp-pot', 'Require a argument of type object.');
@@ -205,7 +263,7 @@ function gulpWPpot(options) {
     options.headers = defaultHeaders;
   }
 
-  // creating a stream through which each file will pass
+  // Creating a stream through which each file will pass.
   var stream = through.obj(function(file, enc, cb) {
 
     if (file.isStream()) {
@@ -222,7 +280,7 @@ function gulpWPpot(options) {
     cb();
   }, function(cb) {
 
-    //Headers
+    // Headers.
     var year = new Date().getFullYear();
     var contents = '# Copyright (C) ' + year + ' ' + options.package + '\n';
     contents += '# This file is distributed under the same license as the ' + options.package + ' package.\n';
@@ -257,7 +315,7 @@ function gulpWPpot(options) {
 
     contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\n"\n\n';
 
-    //Contents
+    // Contents.
     buffer = uniqueTranslations(buffer);
     buffer = translationToPot(buffer);
     contents += buffer.join('\n');
