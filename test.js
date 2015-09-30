@@ -156,7 +156,7 @@ describe('generate tests', function () {
     stream.end();
   });
 
-  it ('should generate a pot file from php file with escaped characters', function (done) {
+  it ('should generate a pot file from php file with escaped single quotes', function (done) {
     var testFile = new File({
       contents: new Buffer("<?php _ex( 'It\\\'s escaped', 'test' ); ?>")
     });
@@ -169,7 +169,27 @@ describe('generate tests', function () {
     stream.once('data', function (file) {
       assert(file.isBuffer());
       var fileContents = file.contents.toString();
-      assert(fileContents.indexOf("msgid \"It\\\'s escaped\"\n") !== -1);
+      assert(fileContents.indexOf('msgid \"It\'s escaped\"\n') !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file from php file with escaped double quotes', function (done) {
+    var testFile = new File({
+      contents: new Buffer("<?php _ex( \"Hello \\\"World\\\"\", 'test' ); ?>")
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('msgid \"Hello \\\"World\\\"\"\n') !== -1);
       done();
     });
     stream.write(testFile);
