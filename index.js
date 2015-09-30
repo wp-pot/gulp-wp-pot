@@ -62,9 +62,9 @@ function keyChain(key, functionArgs) {
  * @return {array}
  */
 function findTranslations(file, domain) {
-  var lines             = file.contents.toString().split('\n');
+  var lines                = file.contents.toString().split('\n');
   var patternFunctionCalls = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\s*\(/g;
-  var translations                 = [];
+  var translations         = [];
   var functionCall;
 
   lines.forEach(function(line, lineNumber) {
