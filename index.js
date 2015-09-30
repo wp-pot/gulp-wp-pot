@@ -90,10 +90,6 @@ function findTranslations(file, domain) {
             continue;
           }
 
-          if (!escaped && currentChar === '\\') {
-            escaped = true;
-          }
-
           if (!escaped && !quote && (currentChar === '\"' || currentChar === '\'')) {
             quote = currentChar;
             continue;
@@ -115,6 +111,8 @@ function findTranslations(file, domain) {
 
           if (escaped) {
             escaped = false;
+          } else if (!escaped && currentChar === '\\') {
+            escaped = true;
           }
 
           if (openParentheses > 0) {
