@@ -3,7 +3,6 @@
 /* global describe, it */
 
 var assert = require('assert');
-var gutil  = require('gulp-util');
 var File   = require('vinyl');
 var wpPot  = require('./');
 
