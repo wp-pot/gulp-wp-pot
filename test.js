@@ -194,4 +194,38 @@ describe('generate tests', function () {
     stream.write(testFile);
     stream.end();
   });
+
+  it ('should generate a pot file from php file with domain set as variable', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _e( "Name", $test ); ?>')
+    });
+    var stream = wpPot({
+      domain: '$test'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgid \"Name\"\n") !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file from php file with domain set as a constant', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _e( "Name", TEST ); ?>')
+    });
+    var stream = wpPot({
+      domain: 'TEST'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgid \"Name\"\n") !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
 });
