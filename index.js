@@ -148,7 +148,7 @@ function findTranslations(file, domain) {
  *
  * @param  {array} orig
  *
- * @return {array}
+ * @return {object}
  */
 function uniqueTranslations(orig) {
   // Merge duplicate translations, add source path to info.
@@ -170,7 +170,7 @@ function uniqueTranslations(orig) {
 /**
  * Write translation to array with pot format.
  *
- * @param  {array} buffer
+ * @param  {object} buffer
  *
  * @return {array}
  */
@@ -194,11 +194,9 @@ function translationToPot(buffer) {
         if (/\n/.test(buffer[el].functionArgs[0])) {
           output.push('msgid ""');
           var rows = buffer[el].functionArgs[0].split(/\n/);
-          for (var rowId in rows) {
-            if (rows.hasOwnProperty(rowId)) {
-              var lineBreak = parseInt(rowId) === (rows.length - 1) ? '' : '\\n';
-              output.push('"' + rows[rowId] + lineBreak + '"');
-            }
+          for (var rowId = 0; rowId < rows.length; rowId++) {
+            var lineBreak = parseInt(rowId) === (rows.length - 1) ? '' : '\\n';
+            output.push('"' + rows[rowId] + lineBreak + '"');
           }
         } else {
           output.push('msgid "' + buffer[el].functionArgs[0] + '"');
