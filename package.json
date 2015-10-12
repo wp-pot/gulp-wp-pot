@@ -46,6 +46,7 @@
     "vinyl": "^1.0.0"
   },
   "dependencies": {
+    "get-line-from-pos": "^1.0.0",
     "gulp-util": "^3.0.6",
     "through2": "^2.0.0"
   }

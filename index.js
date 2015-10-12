@@ -1,8 +1,10 @@
 'use strict';
 
-var gutil       = require('gulp-util');
-var through     = require('through2');
-var path        = require('path');
+var gutil          = require('gulp-util');
+var through        = require('through2');
+var path           = require('path');
+var getLineFromPos = require('get-line-from-pos');
+
 var PluginError = gutil.PluginError;
 
 /**
@@ -62,79 +64,81 @@ function keyChain(key, functionArgs) {
  * @return {array}
  */
 function findTranslations(file, domain) {
-  var lines                = file.contents.toString().split('\n');
+  var fileContent         = file.contents.toString();
   var patternFunctionCalls = /(__|_e|esc_attr__|esc_attr_e|esc_html__|esc_html_e|_x|_ex|esc_attr_x|esc_html_x|_n|_n_noop|_nx|_nx_noop)\s*\(/g;
   var translations         = [];
   var functionCall;
 
-  lines.forEach(function(line, lineNumber) {
-    while ((functionCall = patternFunctionCalls.exec(line))) {
-      var functionArgs = [];
-      var openParentheses = 1;
-      var escaped = false;
-      var quote = '';
-      var currentArgument = '';
+  while ((functionCall = patternFunctionCalls.exec(fileContent))) {
+    var functionArgs = [];
+    var openParentheses = 1;
+    var escaped = false;
+    var quote = '';
+    var currentArgument = '';
 
-      for (var i = functionCall.index + functionCall[0].length, len = line.length; i < len; i++) {
-        var currentChar = line[i];
+    for (var i = functionCall.index + functionCall[0].length, len = fileContent.length; i < len; i++) {
+      var currentChar = fileContent[i];
 
-        if (quote === '' && currentChar === ' ') { // Ignore spaces outside quotes.
-          continue;
-        } else if (!escaped && quote && currentChar === quote) { // If in quote and current char is unescaped quote char then close quote.
-          quote = '';
-          continue;
-        } else if (!escaped && !quote && (currentChar === '\"' || currentChar === '\'')) { // If outside of quote and current char is unescaped quote char then open quote.
-          quote = currentChar;
-          continue;
-        }
+      var saveChar = true; // Save character in argument
 
-        if (!quote && currentChar === '(') { // If current char is opening parantheses and outside an quote increment parantheses count to know when to finish the translation function.
-          openParentheses++;
-        } else if (!quote && currentChar === ')') { // If current char is closing parantheses and outside an quote decrese parantheses count to know when to finish the translation function.
-          openParentheses--;
-        }
-
-        if (!quote && currentChar === ',') { // If not in quote and current char is comma the current argument is done.
-          functionArgs.push(currentArgument);
-          currentArgument = '';
-          continue;
-        }
-
-        if (escaped) { // Reset escaped if escape was enabled.
-          escaped = false;
-        } else if (currentChar === '\\') { // Enable escape if current char is non escaped escape character.
-          escaped = true;
-        }
-
-        if (openParentheses > 0) { // If function is not closed, add current char to current arguement.
-          currentArgument = currentArgument + currentChar;
-        } else { // If function is closed by this character, add current arguement to function arguments and continue to next function.
-          functionArgs.push(currentArgument);
-          break;
-        }
+      if (quote === '' && /\s/.test(currentChar)) { // Ignore whitespace outside quotes.
+        saveChar = false;
+      } else if (!escaped && quote && currentChar === quote) { // If in quote and current char is unescaped quote char then close quote.
+        quote = '';
+        saveChar = false;
+      } else if (!escaped && !quote && (currentChar === '\"' || currentChar === '\'')) { // If outside of quote and current char is unescaped quote char then open quote.
+        quote = currentChar;
+        saveChar = false;
       }
 
-      if (functionArgs.length <= 1) { // If no arguments was found in this function ignore it.
+      if (!quote && currentChar === '(') { // If current char is opening parantheses and outside an quote increment parantheses count to know when to finish the translation function.
+        openParentheses++;
+        saveChar = false;
+      } else if (!quote && currentChar === ')') { // If current char is closing parantheses and outside an quote decrese parantheses count to know when to finish the translation function.
+        openParentheses--;
+        saveChar = false;
+      }
+
+      if (!quote && currentChar === ',') { // If not in quote and current char is comma the current argument is done.
+        functionArgs.push(currentArgument);
+        currentArgument = '';
         continue;
       }
 
-      var filePath = file.path === undefined ? domain + '.pot' : file.path;
+      if (escaped) { // Reset escaped if escape was enabled.
+        escaped = false;
+      } else if (currentChar === '\\') { // Enable escape if current char is non escaped escape character.
+        escaped = true;
+      }
 
-      if (!domain || domain === functionArgs[functionArgs.length - 1]) { // Only save function if no domain is set or if domain is correct.
-        for (var j = 0; j < functionArgs.length; j++) {
-          functionArgs[j] = functionArgs[j].replace(/\\([^\"\\])/g, '$1'); // Unescape everything except for " and \ (they are escaped in the pot-file).
-        }
-
-        // Add function call to translations array.
-        translations.push({
-          key: functionCall[1],
-          functionArgs: functionArgs,
-          info: path.relative('./', filePath) + ':' + (lineNumber + 1),
-          keyChain: keyChain(functionCall[1], functionArgs),
-        });
+      if (openParentheses > 0 && saveChar === true) { // If function is not closed, add current char to current arguement.
+        currentArgument = currentArgument + currentChar;
+      } else if (openParentheses === 0) { // If function is closed by this character, add current arguement to function arguments and continue to next function.
+        functionArgs.push(currentArgument);
+        break;
       }
     }
-  });
+
+    if (functionArgs.length <= 1) { // If no arguments was found in this function ignore it.
+      continue;
+    }
+
+    var filePath = file.path === undefined ? domain + '.pot' : file.path;
+
+    if (!domain || domain === functionArgs[functionArgs.length - 1]) { // Only save function if no domain is set or if domain is correct.
+      for (var j = 0; j < functionArgs.length; j++) {
+        functionArgs[j] = functionArgs[j].replace(/\\([^\"\\])/g, '$1'); // Unescape everything except for " and \ (they are escaped in the pot-file).
+      }
+
+      // Add function call to translations array.
+      translations.push({
+        key: functionCall[1],
+        functionArgs: functionArgs,
+        info: path.relative('./', filePath) + ':' + getLineFromPos(fileContent, functionCall.index),
+        keyChain: keyChain(functionCall[1], functionArgs),
+      });
+    }
+  }
 
   return translations;
 }
@@ -187,7 +191,18 @@ function translationToPot(buffer) {
           output.push('msgctxt "' + buffer[el].functionArgs[3] + '"');
         }
 
-        output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+        if (/\n/.test(buffer[el].functionArgs[0])) {
+          output.push('msgid ""');
+          var rows = buffer[el].functionArgs[0].split(/\n/);
+          for (var rowId in rows) {
+            if (rows.hasOwnProperty(rowId)) {
+              var lineBreak = parseInt(rowId) === (rows.length - 1) ? '' : '\\n';
+              output.push('"' + rows[rowId] + lineBreak + '"');
+            }
+          }
+        } else {
+          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+        }
 
         if (isPlural(key)) {
           output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');

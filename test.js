@@ -113,7 +113,7 @@ describe('generate tests', function () {
 
   it ('should generate a pot file from php file with escaped single quotes', function (done) {
     var testFile = new File({
-      contents: new Buffer("<?php _ex( 'It\\\'s escaped', 'test' ); ?>")
+      contents: new Buffer("<?php __( 'It\\\'s escaped', 'test' ); ?>")
     });
     var stream = wpPot({
       domain: 'test',
@@ -133,7 +133,7 @@ describe('generate tests', function () {
 
   it ('should generate a pot file from php file with escaped double quotes', function (done) {
     var testFile = new File({
-      contents: new Buffer("<?php _ex( \"Hello \\\"World\\\"\", 'test' ); ?>")
+      contents: new Buffer("<?php __( \"Hello \\\"World\\\"\", 'test' ); ?>")
     });
     var stream = wpPot({
       domain: 'test',
@@ -145,6 +145,46 @@ describe('generate tests', function () {
       assert(file.isBuffer());
       var fileContents = file.contents.toString();
       assert(fileContents.indexOf('msgid \"Hello \\\"World\\\"\"\n') !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file from php file with line breaks in function argument', function (done) {
+    var testFile = new File({
+      contents: new Buffer("<?php __( ( \"Hello\nWorld\"), 'test' ); ?>")
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('msgid \"\"\n\"Hello\\n\"\n\"World\"\n') !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file from php file with line breaks in function call', function (done) {
+    var testFile = new File({
+      contents: new Buffer("<?php __(\n\t\"Hello World\",\n\t'test'\n); ?>")
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('msgid \"Hello World\"\n') !== -1);
       done();
     });
     stream.write(testFile);
