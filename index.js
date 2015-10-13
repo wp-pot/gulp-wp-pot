@@ -195,7 +195,7 @@ function translationToPot(buffer) {
           output.push('msgid ""');
           var rows = buffer[el].functionArgs[0].split(/\n/);
           for (var rowId = 0; rowId < rows.length; rowId++) {
-            var lineBreak = parseInt(rowId) === (rows.length - 1) ? '' : '\\n';
+            var lineBreak = rowId === (rows.length - 1) ? '' : '\\n';
             output.push('"' + rows[rowId] + lineBreak + '"');
           }
         } else {
