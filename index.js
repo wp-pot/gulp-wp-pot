@@ -81,9 +81,11 @@ function findTranslations(file, domain) {
 
       var saveChar = true; // Save character in argument
 
-      if (quote === '' && /\s/.test(currentChar)) { // Ignore whitespace outside quotes.
+      if (!quote && /\s/.test(currentChar)) { // Ignore whitespace outside quotes.
         saveChar = false;
-      } else if (!escaped && quote && currentChar === quote) { // If in quote and current char is unescaped quote char then close quote.
+      }
+
+      if (!escaped && currentChar === quote) { // If in quote and current char is unescaped quote char then close quote.
         quote = '';
         saveChar = false;
       } else if (!escaped && !quote && (currentChar === '\"' || currentChar === '\'')) { // If outside of quote and current char is unescaped quote char then open quote.
