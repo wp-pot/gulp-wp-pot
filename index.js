@@ -130,6 +130,7 @@ function findTranslations(file, domain) {
     if (!domain || domain === functionArgs[functionArgs.length - 1]) { // Only save function if no domain is set or if domain is correct.
       for (var j = 0; j < functionArgs.length; j++) {
         functionArgs[j] = functionArgs[j].replace(/\\([^\"\\])/g, '$1'); // Unescape everything except for " and \ (they are escaped in the pot-file).
+        functionArgs[j] = functionArgs[j].replace(/\\([\s\S])|(\")/g, '\\$1$2'); // Escape unescaped "
       }
 
       // Add function call to translations array.
