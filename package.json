@@ -40,14 +40,14 @@
     "translation"
   ],
   "devDependencies": {
-    "jscs": "^2.0.0",
-    "jshint": "^2.8.0",
-    "mocha": "^2.2.5",
-    "vinyl": "^1.0.0"
+    "jscs": "^2.8.0",
+    "jshint": "^2.9.1-rc2",
+    "mocha": "^2.3.4",
+    "vinyl": "^1.1.0"
   },
   "dependencies": {
     "get-line-from-pos": "^1.0.0",
-    "gulp-util": "^3.0.6",
+    "gulp-util": "^3.0.7",
     "through2": "^2.0.0"
   }
 }
