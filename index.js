@@ -160,9 +160,9 @@ function uniqueTranslations(orig) {
   orig.forEach(function(file) {
     file.forEach(function(translation) {
       if (buffer[translation.keyChain]) {
-        buffer[ translation.keyChain ].info += ', ' + translation.info;
+        buffer[translation.keyChain].info += ', ' + translation.info;
       } else {
-        buffer[ translation.keyChain ] = translation;
+        buffer[translation.keyChain] = translation;
       }
     });
   });
