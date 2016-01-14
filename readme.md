@@ -100,4 +100,4 @@ gulp.task('default', function () {
 
 ## License
 
-MIT © [Rasmus Bengtsson](https://github.com/rasmus) | Initial work by [Willy Bahuaud](https://github.com/willybahuaud)
+MIT © [Rasmus Bengtsson](https://github.com/rasmusbe) | Initial work by [Willy Bahuaud](https://github.com/willybahuaud)
