@@ -313,3 +313,47 @@ describe('header tests', function () {
     stream.end();
   });
 });
+
+describe('file path tests', function () {
+  it ('should generate a pot file with correct file path comments', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _x( "Name", "the name", "test" );  ?>'),
+      path: "test/test.php"
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('#: test/test.php:1') !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file with correct file path comments with Windows styled paths', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _x( "Name", "the name", "test" );  ?>'),
+      path: "test\\test.php"
+    });
+    var stream = wpPot({
+      domain: 'test',
+      bugReport: 'http://example.com',
+      lastTranslator: 'John Doe <mail@example.com>',
+      team: 'Team Team <mail@example.com>'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf('#: test/test.php:1') !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+});

@@ -186,7 +186,7 @@ function translationToPot(buffer) {
       if (buffer.hasOwnProperty(el)) {
         var key = buffer[el].key;
 
-        output.push('#: ' + buffer[el].info);
+        output.push('#: ' + buffer[el].info.replace(/\\/g, '/'));
 
         if (!isPlural(key) && hasContext(key)) {
           output.push('msgctxt "' + buffer[el].functionArgs[1] + '"');
