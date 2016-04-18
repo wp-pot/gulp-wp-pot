@@ -1,6 +1,6 @@
 {
   "name": "gulp-wp-pot",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Generate pot-files for WordPress localization",
   "license": "MIT",
   "repository": "rasmusbe/gulp-wp-pot",
@@ -40,14 +40,14 @@
     "translation"
   ],
   "devDependencies": {
-    "jscs": "^2.8.0",
-    "jshint": "^2.9.1-rc2",
-    "mocha": "^2.3.4",
-    "vinyl": "^1.1.0"
+    "jscs": "^3.0.3",
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5",
+    "vinyl": "^1.1.1"
   },
   "dependencies": {
     "get-line-from-pos": "^1.0.0",
     "gulp-util": "^3.0.7",
-    "through2": "^2.0.0"
+    "through2": "^2.0.1"
   }
 }
