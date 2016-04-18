@@ -157,8 +157,8 @@ function uniqueTranslations(orig) {
   // Merge duplicate translations, add source path to info.
   var buffer = {};
 
-  orig.forEach(function(file) {
-    file.forEach(function(translation) {
+  orig.forEach(function (file) {
+    file.forEach(function (translation) {
       if (buffer[translation.keyChain]) {
         buffer[translation.keyChain].info += ', ' + translation.info;
       } else {
@@ -271,7 +271,7 @@ function gulpWPpot(options) {
   }
 
   // Creating a stream through which each file will pass.
-  var stream = through.obj(function(file, enc, cb) {
+  var stream = through.obj(function (file, enc, cb) {
 
     if (file.isStream()) {
       throw new PluginError('gulp-wp-pot', 'Streams are not supported.');
@@ -285,7 +285,7 @@ function gulpWPpot(options) {
     }
 
     cb();
-  }, function(cb) {
+  }, function (cb) {
 
     // Headers.
     var year = new Date().getFullYear();
