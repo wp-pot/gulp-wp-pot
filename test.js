@@ -104,6 +104,7 @@ describe('generate tests', function () {
       assert(file.isBuffer());
       var fileContents = file.contents.toString();
       assert(fileContents.indexOf("msgctxt \"stars translation\"\n") !== -1);
+      assert(fileContents.indexOf("msgid \"%s star\"\n") !== -1);
       assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
       done();
     });
@@ -210,6 +211,24 @@ describe('generate tests', function () {
     stream.write(testFile);
     stream.end();
   });
+
+  it ('should generate a pot file from php file with noop function', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _n_noop( "%s star", "%s stars", "test" ); ?>')
+    });
+    var stream = wpPot({
+      domain: 'test'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgid \"%s star\"\n") !== -1);
+      assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
 });
 
 describe('domain tests', function () {
@@ -241,6 +260,25 @@ describe('domain tests', function () {
       assert(file.isBuffer());
       var fileContents = file.contents.toString();
       assert(fileContents.indexOf("msgid \"Name\"\n") !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file from php file with context and domain set as a constant', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _nx_noop( "%s star", "%s stars", "stars translation", TEST ); ?>')
+    });
+    var stream = wpPot({
+      domain: 'TEST'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgctxt \"stars translation\"\n") !== -1);
+      assert(fileContents.indexOf("msgid \"%s star\"\n") !== -1);
+      assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
       done();
     });
     stream.write(testFile);

@@ -29,6 +29,10 @@ function hasContext(key) {
   return /(_x|_ex|esc_attr_x|esc_html_x|_nx|_nx_noop)/.test(key);
 }
 
+function isNoop(key) {
+  return /(_nx_noop|_n_noop)/.test(key);
+}
+
 /**
  * Get key chain.
  *
@@ -188,10 +192,17 @@ function translationToPot(buffer) {
 
         output.push('#: ' + buffer[el].info.replace(/\\/g, '/'));
 
-        if (!isPlural(key) && hasContext(key)) {
-          output.push('msgctxt "' + buffer[el].functionArgs[1] + '"');
-        } else if (isPlural(key) && hasContext(key)) {
-          output.push('msgctxt "' + buffer[el].functionArgs[3] + '"');
+        if (hasContext(key)) {
+          var argKey = 1;
+          if (isPlural(key)) {
+            argKey = argKey + 2;
+          }
+
+          if (isNoop(key)) {
+            argKey = argKey - 1;
+          }
+
+          output.push('msgctxt "' + buffer[el].functionArgs[argKey] + '"');
         }
 
         if (/\n/.test(buffer[el].functionArgs[0])) {
