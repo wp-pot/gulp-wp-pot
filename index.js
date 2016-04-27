@@ -190,6 +190,7 @@ function translationToPot(buffer) {
       if (buffer.hasOwnProperty(el)) {
         var key = buffer[el].key;
 
+        // Unify paths for Unix and Windows
         output.push('#: ' + buffer[el].info.replace(/\\/g, '/'));
 
         if (hasContext(key)) {
@@ -198,6 +199,7 @@ function translationToPot(buffer) {
             argKey = argKey + 2;
           }
 
+          // Noop-functions has one less argument
           if (isNoop(key)) {
             argKey = argKey - 1;
           }
@@ -249,20 +251,20 @@ function isObject(obj) {
  * @return {object}
  */
 function gulpWPpot(options) {
-  if (options === undefined || !isObject(options)) {
+  if (options !== undefined && !isObject(options)) {
     throw new PluginError('gulp-wp-pot', 'Require a argument of type object.');
   }
 
-  if (!options.domain) {
-    throw new PluginError('gulp-wp-pot', 'Domain option is required.');
+  if (!options) {
+    options = {};
   }
 
   if (!options.destFile) {
-    options.destFile = options.domain + '.pot';
+    options.destFile = (options.domain || 'translations') + '.pot';
   }
 
   if (!options.package) {
-    options.package = options.domain;
+    options.package = options.domain || 'unnamed project';
   }
 
   var defaultHeaders = {

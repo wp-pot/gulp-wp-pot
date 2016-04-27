@@ -7,27 +7,11 @@ var File   = require('vinyl');
 var wpPot  = require('./');
 
 describe('Arguments tests', function () {
-  it('should thrown a error without argument', function () {
-    try {
-      wpPot();
-    } catch (e) {
-      assert.equal('Require a argument of type object.', e.message);
-    }
-  });
-
   it('should thrown a error when argument is not a object', function () {
     try {
       wpPot(null);
     } catch (e) {
       assert.equal('Require a argument of type object.', e.message);
-    }
-  });
-
-  it('should throw a error without domain', function () {
-      try {
-      wpPot({});
-    } catch (e) {
-      assert.equal('Domain option is required.', e.message);
     }
   });
 });
@@ -279,6 +263,22 @@ describe('domain tests', function () {
       assert(fileContents.indexOf("msgctxt \"stars translation\"\n") !== -1);
       assert(fileContents.indexOf("msgid \"%s star\"\n") !== -1);
       assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should generate a pot file from php file with no domain set', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _e( "Name", "test" ); _e( "Hello World", "test2" ); ?>')
+    });
+    var stream = wpPot();
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(fileContents.indexOf("msgid \"Name\"\n") !== -1);
+      assert(fileContents.indexOf("msgid \"Hello World\"\n") !== -1);
       done();
     });
     stream.write(testFile);

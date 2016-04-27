@@ -35,67 +35,68 @@ var wpPot = require('gulp-wp-pot');
 var sort = require('gulp-sort');
 
 gulp.task('default', function () {
-	return gulp.src('src/*.php')
-		.pipe(sort())
-		.pipe(wpPot( {
-			domain: 'domain',
-			destFile:'file.pot',
-			package: 'package_name',
-			bugReport: 'http://example.com',
-			lastTranslator: 'John Doe <mail@example.com>',
-			team: 'Team Team <mail@example.com>'
-		} ))
-		.pipe(gulp.dest('dist'));
+    return gulp.src('src/*.php')
+        .pipe(sort())
+        .pipe(wpPot( {
+            domain: 'domain',
+            destFile:'file.pot',
+            package: 'package_name',
+            bugReport: 'http://example.com',
+            lastTranslator: 'John Doe <mail@example.com>',
+            team: 'Team Team <mail@example.com>'
+        } ))
+        .pipe(gulp.dest('dist'));
 });
 ```
 
 
 ## wpPot({options})
 
-- `domain` (optional, required if destFile is missing)
+- `domain`
 
-	Type: `string`  
+    Type: `string`  
 
-	Domain to retrieve the translated text. All textdomains is included if missing.
+    Domain to retrieve the translated text. All textdomains is included if missing.
 
-- `destFile` (optional, required if domain is missing)
+- `destFile`
 
-	Type: `string`  
-	Default: domain.pot
+    Type: `string`  
+    Default: *domain.pot* or translations.pot if domain is missing
 
-	Filename for template file
+    Filename for template file
 
 
-- `package` (optional, required if domain is missing)
+- `package`
 
-	Type: `string`  
-	Default: same as domain
+    Type: `string`  
+    Default: *domain* or *unnamed project* if domain is missing
 
-	Package name
+    Package name
 
-- `bugReport` (optional)
+- `bugReport`
 
-	Type: `URL`  
+    Type: `URL`  
 
-	URL translatation support
+    URL translatation support
 
-- `lastTranslator` (optional)
+- `lastTranslator`
 
-	Type: `string`  
+    Type: `string`  
 
-	Name and email address of the last translator (ex: `John Doe <me@example.com>`)
+    Name and email address of the last translator (ex: `John Doe <me@example.com>`)
 
-- `team` (optional)
+- `team`
 
-	Type: `string`  
+    Type: `string`  
 
-	Name and email address of the translation team (ex: `Team <team@example.com>`)
+    Name and email address of the translation team (ex: `Team <team@example.com>`)
 
-- `headers` (optional)
+- `headers`
 
-	Type: `object|bool`  
+    Type: `object|bool`  
+    Default: Headers used by Poedit
 
-	Object containing extra POT-file headers. Set to false to not generate default extra headers for Poedit.
+    Object containing extra POT-file headers. Set to false to not generate the default extra headers for Poedit.
 
 
 ## License
