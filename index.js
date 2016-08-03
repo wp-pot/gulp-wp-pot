@@ -41,21 +41,12 @@ function isNoop(key) {
 
  * @return {string|undefined}
  */
-function keyChain(key, functionArgs) {
-  if (!isPlural(key) && !hasContext(key)) {
-    return 'simple_' + functionArgs[0];
+function keyChain(translationString, context) {
+  if(!context) {
+    return '_simple_' + translationString;
   }
-
-  if (!isPlural(key) && hasContext(key)) {
-    return 'context_' + functionArgs[1] +  functionArgs[0];
-  }
-
-  if (isPlural(key) && !hasContext(key)) {
-    return 'multiple_' + functionArgs[1] + functionArgs[0];
-  }
-
-  if (isPlural(key) && hasContext(key)) {
-    return 'multiple_' + functionArgs[2] + functionArgs[1] + functionArgs[0];
+  else {
+    return '_context_' + context + '_' + translationString;
   }
 }
 
@@ -137,13 +128,36 @@ function findTranslations(file, domain) {
         functionArgs[j] = functionArgs[j].replace(/\\([\s\S])|(\")/g, '\\$1$2'); // Escape unescaped "
       }
 
+      var translation = {
+        info : path.relative('./', filePath) + ':' + getLineFromPos(fileContent, functionCall.index),
+        msgid:  functionArgs[0]
+      };
+
+      if (isPlural(functionCall[1])) {
+        translation.msgid_plural = functionArgs[1];
+      }
+
+      if (hasContext(functionCall[1])) {
+        // Default context position
+        var contextKey = 1;
+
+        // Plural has two more arguments before context
+        if (isPlural(functionCall[1])) {
+          contextKey = contextKey + 2;
+        }
+
+        // Noop-functions has one less argument before context
+        if (isNoop(functionCall[1])) {
+          contextKey = contextKey - 1;
+        }
+
+        translation.msgctxt = functionArgs[contextKey];
+      }
+
+      translation.key = keyChain(translation.msgid, translation.msgctxt);
+
       // Add function call to translations array.
-      translations.push({
-        key: functionCall[1],
-        functionArgs: functionArgs,
-        info: path.relative('./', filePath) + ':' + getLineFromPos(fileContent, functionCall.index),
-        keyChain: keyChain(functionCall[1], functionArgs),
-      });
+      translations.push(translation);
     }
   }
 
@@ -153,25 +167,29 @@ function findTranslations(file, domain) {
 /**
  * Find unique translations.
  *
- * @param  {array} orig
+ * @param  {array} original
  *
  * @return {object}
  */
-function uniqueTranslations(orig) {
+function uniqueTranslations(translationsBuffer) {
   // Merge duplicate translations, add source path to info.
-  var buffer = {};
+  var translations = {};
 
-  orig.forEach(function (file) {
+  translationsBuffer.forEach(function (file) {
     file.forEach(function (translation) {
-      if (buffer[translation.keyChain]) {
-        buffer[translation.keyChain].info += ', ' + translation.info;
+      if (translations[translation.key]) {
+        translations[translation.key].info += ', ' + translation.info;
+
+        if (translation.msgid_plural && !translations[translation.key].msgid_plural) {
+          translations[translation.key].msgid_plural = translation.msgid_plural;
+        }
       } else {
-        buffer[translation.keyChain] = translation;
+        translations[translation.key] = translation;
       }
     });
   });
 
-  return buffer;
+  return translations;
 }
 
 /**
@@ -181,45 +199,34 @@ function uniqueTranslations(orig) {
  *
  * @return {array}
  */
-function translationToPot(buffer) {
+function translationToPot(translations) {
   // Write translation rows.
   var output = [];
 
-  if (buffer) {
-    for (var el in buffer) {
-      if (buffer.hasOwnProperty(el)) {
-        var key = buffer[el].key;
+  if (translations) {
+    for (var el in translations) {
+      if (translations.hasOwnProperty(el)) {
 
         // Unify paths for Unix and Windows
-        output.push('#: ' + buffer[el].info.replace(/\\/g, '/'));
+        output.push('#: ' + translations[el].info.replace(/\\/g, '/'));
 
-        if (hasContext(key)) {
-          var argKey = 1;
-          if (isPlural(key)) {
-            argKey = argKey + 2;
-          }
-
-          // Noop-functions has one less argument
-          if (isNoop(key)) {
-            argKey = argKey - 1;
-          }
-
-          output.push('msgctxt "' + buffer[el].functionArgs[argKey] + '"');
+        if (translations[el].msgctxt) {
+          output.push('msgctxt "' + translations[el].msgctxt + '"');
         }
 
-        if (/\n/.test(buffer[el].functionArgs[0])) {
+        if (/\n/.test(translations[el].msgid)) {
           output.push('msgid ""');
-          var rows = buffer[el].functionArgs[0].split(/\n/);
+          var rows = translations[el].msgid.split(/\n/);
           for (var rowId = 0; rowId < rows.length; rowId++) {
             var lineBreak = rowId === (rows.length - 1) ? '' : '\\n';
             output.push('"' + rows[rowId] + lineBreak + '"');
           }
         } else {
-          output.push('msgid "' + buffer[el].functionArgs[0] + '"');
+          output.push('msgid "' + translations[el].msgid + '"');
         }
 
-        if (isPlural(key)) {
-          output.push('msgid_plural "' + buffer[el].functionArgs[1] + '"');
+        if (translations[el].msgid_plural) {
+          output.push('msgid_plural "' + translations[el].msgid_plural + '"');
           output.push('msgstr[0] ""');
           output.push('msgstr[1] ""\n');
         } else {
@@ -275,7 +282,7 @@ function gulpWPpot(options) {
     'X-Poedit-SearchPathExcluded-0': '*.js',
   };
 
-  var buffer   = [];
+  var translationsBuffer   = [];
   var destFile = options.destFile;
   var destDir  = path.dirname(destFile);
 
@@ -291,9 +298,9 @@ function gulpWPpot(options) {
     }
 
     if (file.isBuffer()) {
-      var translations = findTranslations(file, options.domain);
-      if (translations.length > 0) {
-        buffer.push(translations);
+      var fileTranslations = findTranslations(file, options.domain);
+      if (fileTranslations.length > 0) {
+        translationsBuffer.push(fileTranslations);
       }
     }
 
@@ -336,9 +343,10 @@ function gulpWPpot(options) {
     contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\n"\n\n';
 
     // Contents.
-    buffer = uniqueTranslations(buffer);
-    buffer = translationToPot(buffer);
-    contents += buffer.join('\n');
+    var translations = uniqueTranslations(translationsBuffer);
+    var translationLines = translationToPot(translations);
+
+    contents += translationLines.join('\n');
 
     var concatenatedFile = new gutil.File({
       base: path.relative('./', destDir),

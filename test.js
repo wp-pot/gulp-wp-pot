@@ -6,6 +6,10 @@ var assert = require('assert');
 var File   = require('vinyl');
 var wpPot  = require('./');
 
+function numberOfMatches(needle, haystack) {
+  return (haystack.match(new RegExp(needle, "g")) || []).length;
+}
+
 describe('Arguments tests', function () {
   it('should thrown a error when argument is not a object', function () {
     try {
@@ -208,6 +212,24 @@ describe('generate tests', function () {
       var fileContents = file.contents.toString();
       assert(fileContents.indexOf("msgid \"%s star\"\n") !== -1);
       assert(fileContents.indexOf("msgid_plural \"%s stars\"\n") !== -1);
+      done();
+    });
+    stream.write(testFile);
+    stream.end();
+  });
+
+  it ('should only generate one translation line when duplicated strings detected', function (done) {
+    var testFile = new File({
+      contents: new Buffer('<?php _e( "Name", "test" ); _n_noop( "Name", "Names", "test" ); ?>')
+    });
+    var stream = wpPot({
+      domain: 'test'
+    });
+    stream.once('data', function (file) {
+      assert(file.isBuffer());
+      var fileContents = file.contents.toString();
+      assert(numberOfMatches("msgid \"Name\"\n", fileContents) === 1);
+      assert(numberOfMatches("msgid_plural \"Names\"\n", fileContents) === 1);
       done();
     });
     stream.write(testFile);
