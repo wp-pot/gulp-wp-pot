@@ -42,10 +42,9 @@ function isNoop(key) {
  * @return {string|undefined}
  */
 function keyChain(translationString, context) {
-  if(!context) {
+  if (!context) {
     return '_simple_' + translationString;
-  }
-  else {
+  } else {
     return '_context_' + context + '_' + translationString;
   }
 }
@@ -129,8 +128,8 @@ function findTranslations(file, domain) {
       }
 
       var translation = {
-        info : path.relative('./', filePath) + ':' + getLineFromPos(fileContent, functionCall.index),
-        msgid:  functionArgs[0]
+        info: path.relative('./', filePath) + ':' + getLineFromPos(fileContent, functionCall.index),
+        msgid:  functionArgs[0],
       };
 
       if (isPlural(functionCall[1])) {
