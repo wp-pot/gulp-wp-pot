@@ -339,7 +339,7 @@ function gulpWPpot(options) {
       }
     }
 
-    contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\n"\n\n';
+    contents += '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n';
 
     // Contents.
     var translations = uniqueTranslations(translationsBuffer);
