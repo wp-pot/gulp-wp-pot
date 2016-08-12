@@ -10,9 +10,9 @@ var PluginError = gutil.PluginError;
 /**
  * Determine if `key` is plural or not.
  *
- * @param  {string}  key
+ * @param  {string} key
  *
- * @return {boolean}
+ * @return {bool}
  */
 function isPlural(key) {
   return /(_n|_n_noop|_nx|_nx_noop)/.test(key);
@@ -21,14 +21,21 @@ function isPlural(key) {
 /**
  * Determine if `key` has context or not.
  *
- * @param  {string}  key
+ * @param  {string} key
  *
- * @return {boolean}
+ * @return {bool}
  */
 function hasContext(key) {
   return /(_x|_ex|esc_attr_x|esc_html_x|_nx|_nx_noop)/.test(key);
 }
 
+/**
+ * Determine if `key` is a noop key or not.
+ *
+ * @param  {string} key
+ *
+ * @return {bool}
+ */
 function isNoop(key) {
   return /(_nx_noop|_n_noop)/.test(key);
 }
@@ -73,58 +80,82 @@ function findTranslations(file, domain) {
     for (var i = functionCall.index + functionCall[0].length, len = fileContent.length; i < len; i++) {
       var currentChar = fileContent[i];
 
-      var saveChar = true; // Save character in argument
+      // Save character in argument.
+      var saveChar = true;
 
-      if (!quote && /\s/.test(currentChar)) { // Ignore whitespace outside quotes.
+      // Ignore whitespace outside quotes.
+      if (!quote && /\s/.test(currentChar)) {
         saveChar = false;
       }
 
-      if (!escaped && currentChar === quote) { // If in quote and current char is unescaped quote char then close quote.
+      // If in quote and current char is unescaped quote char then close quote.
+      if (!escaped && currentChar === quote) {
         quote = '';
         saveChar = false;
-      } else if (!escaped && !quote && (currentChar === '\"' || currentChar === '\'')) { // If outside of quote and current char is unescaped quote char then open quote.
+
+        // If outside of quote and current char is unescaped quote char then open quote.
+      } else if (!escaped && !quote && (currentChar === '\"' || currentChar === '\'')) {
         quote = currentChar;
         saveChar = false;
       }
 
-      if (!quote && currentChar === '(') { // If current char is opening parantheses and outside an quote increment parantheses count to know when to finish the translation function.
+      // If current char is opening parantheses and outside an quote increment
+      // parantheses count to know when to finish the translation function.
+      if (!quote && currentChar === '(') {
         openParentheses++;
         saveChar = false;
-      } else if (!quote && currentChar === ')') { // If current char is closing parantheses and outside an quote decrese parantheses count to know when to finish the translation function.
+
+        // If current char is closing parantheses and outside an
+        // quote decrese parantheses count to know when to finish
+        // the translation function.
+      } else if (!quote && currentChar === ')') {
         openParentheses--;
         saveChar = false;
       }
 
-      if (!quote && currentChar === ',') { // If not in quote and current char is comma the current argument is done.
+      // If not in quote and current char is comma the current argument is done.
+      if (!quote && currentChar === ',') {
         functionArgs.push(currentArgument);
         currentArgument = '';
         continue;
       }
 
-      if (escaped) { // Reset escaped if escape was enabled.
+      // Reset escaped if escape was enabled.
+      if (escaped) {
         escaped = false;
-      } else if (currentChar === '\\') { // Enable escape if current char is non escaped escape character.
+      }
+
+      // Enable escape if current char is non escaped escape character.
+      else if (currentChar === '\\') {
         escaped = true;
       }
 
-      if (openParentheses > 0 && saveChar === true) { // If function is not closed, add current char to current arguement.
+      // If function is not closed, add current char to current arguement.
+      if (openParentheses > 0 && saveChar === true) {
         currentArgument = currentArgument + currentChar;
-      } else if (openParentheses === 0) { // If function is closed by this character, add current arguement to function arguments and continue to next function.
+
+        // If function is closed by this character, add current arguement to function arguments and continue to next function.
+      } else if (openParentheses === 0) {
         functionArgs.push(currentArgument);
         break;
       }
     }
 
-    if (functionArgs.length <= 1) { // If no arguments was found in this function ignore it.
+    // If no arguments was found in this function ignore it.
+    if (functionArgs.length <= 1) {
       continue;
     }
 
     var filePath = file.path === undefined ? domain + '.pot' : file.path;
 
-    if (!domain || domain === functionArgs[functionArgs.length - 1]) { // Only save function if no domain is set or if domain is correct.
+    // Only save function if no domain is set or if domain is correct.
+    if (!domain || domain === functionArgs[functionArgs.length - 1]) {
       for (var j = 0; j < functionArgs.length; j++) {
-        functionArgs[j] = functionArgs[j].replace(/\\([^\"\\])/g, '$1'); // Unescape everything except for " and \ (they are escaped in the pot-file).
-        functionArgs[j] = functionArgs[j].replace(/\\([\s\S])|(\")/g, '\\$1$2'); // Escape unescaped "
+        // Unescape everything except for " and \ (they are escaped in the pot-file).
+        functionArgs[j] = functionArgs[j].replace(/\\([^\"\\])/g, '$1');
+
+        // Escape unescaped "
+        functionArgs[j] = functionArgs[j].replace(/\\([\s\S])|(\")/g, '\\$1$2');
       }
 
       var translation = {
@@ -243,7 +274,7 @@ function translationToPot(translations) {
  *
  * @param  {object}  obj
  *
- * @return {boolean}
+ * @return {bool}
  */
 function isObject(obj) {
   return Object.prototype.toString.call(obj) === '[object Object]';
