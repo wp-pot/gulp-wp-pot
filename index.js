@@ -123,8 +123,10 @@ function findTranslations(file, domain) {
       // Reset escaped if escape was enabled.
       if (escaped) {
         escaped = false;
-        // Enable escape if current char is non escaped escape character.
-      } else if (currentChar === '\\') {
+      }
+
+      // Enable escape if current char is non escaped escape character.
+      else if (currentChar === '\\') {
         escaped = true;
       }
 
