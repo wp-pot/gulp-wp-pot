@@ -28,7 +28,9 @@
     "test": "npm run test-mocha && npm run test-jshint && npm run test-jscs",
     "test-jshint": "jshint index.js",
     "test-jscs": "jscs index.js",
-    "test-mocha": "mocha"
+    "test-mocha": "mocha",
+    "cover": "istanbul cover _mocha",
+    "codacy-cover": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage"
   },
   "files": [
     "index.js"
@@ -40,9 +42,12 @@
     "translation"
   ],
   "devDependencies": {
+    "codacy-coverage": "^2.0.0",
+    "istanbul": "^0.4.5",
     "jscs": "^3.0.3",
     "jshint": "^2.9.1",
     "mocha": "^3.0.0",
+    "mocha-lcov-reporter": "^1.2.0",
     "vinyl": "^2.0.0"
   },
   "dependencies": {
