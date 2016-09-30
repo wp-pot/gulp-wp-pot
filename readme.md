@@ -2,7 +2,7 @@
 
 ## Information
 
-[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/55c46add6537620020002f3c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c46add6537620020002f3c) [![Code Climate](https://codeclimate.com/github/rasmusbe/gulp-wp-pot/badges/gpa.svg)](https://codeclimate.com/github/rasmusbe/gulp-wp-pot)
+[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/55c46add6537620020002f3c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c46add6537620020002f3c) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c0cb82ac2eae4c738d6929a23c6252a6)](https://www.codacy.com/app/rasmusbe/gulp-wp-pot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rasmusbe/gulp-wp-pot&amp;utm_campaign=Badge_Grade)
 
 <table>
 <tr> 
