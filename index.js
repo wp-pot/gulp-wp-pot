@@ -123,16 +123,15 @@ function findTranslations(file, domain) {
       // Reset escaped if escape was enabled.
       if (escaped) {
         escaped = false;
-      }
 
-      // Enable escape if current char is non escaped escape character.
-      else if (currentChar === '\\') {
+        // Enable escape if current char is non escaped escape character.
+      } else if (currentChar === '\\') {
         escaped = true;
       }
 
       // If function is not closed, add current char to current arguement.
       if (openParentheses > 0 && saveChar === true) {
-        currentArgument = currentArgument + currentChar;
+        currentArgument += currentChar;
 
         // If function is closed by this character, add current arguement to function arguments and continue to next function.
       } else if (openParentheses === 0) {
@@ -173,12 +172,12 @@ function findTranslations(file, domain) {
 
         // Plural has two more arguments before context
         if (isPlural(functionCall[1])) {
-          contextKey = contextKey + 2;
+          contextKey += 2;
         }
 
         // Noop-functions has one less argument before context
         if (isNoop(functionCall[1])) {
-          contextKey = contextKey - 1;
+          contextKey -= 1;
         }
 
         translation.msgctxt = functionArgs[contextKey];
@@ -247,8 +246,10 @@ function translationToPot(translations) {
         if (/\n/.test(translations[el].msgid)) {
           output.push('msgid ""');
           var rows = translations[el].msgid.split(/\n/);
+
           for (var rowId = 0; rowId < rows.length; rowId++) {
             var lineBreak = rowId === (rows.length - 1) ? '' : '\\n';
+
             output.push('"' + rows[rowId] + lineBreak + '"');
           }
         } else {
@@ -329,6 +330,7 @@ function gulpWPpot(options) {
 
     if (file.isBuffer()) {
       var fileTranslations = findTranslations(file, options.domain);
+
       if (fileTranslations.length > 0) {
         translationsBuffer.push(fileTranslations);
       }
@@ -340,6 +342,7 @@ function gulpWPpot(options) {
     // Headers.
     var year = new Date().getFullYear();
     var contents = '# Copyright (C) ' + year + ' ' + options.package + '\n';
+
     contents += '# This file is distributed under the same license as the ' + options.package + ' package.\n';
     contents += 'msgid ""\n';
     contents += 'msgstr ""\n';
@@ -385,6 +388,7 @@ function gulpWPpot(options) {
       path: path.join(destDir, destFile),
       contents: new Buffer(contents),
     });
+
     this.push(concatenatedFile);
     cb();
   });
