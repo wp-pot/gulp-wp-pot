@@ -1,10 +1,8 @@
 sudo: false
 language: node_js
 node_js:
-  - "node"
-  - "iojs"
-  - "6"
-  - "5"
-  - "0.12"
+  - node
+  - '6'
+  - '5'
 after_success:
 - npm run codacy-cover
