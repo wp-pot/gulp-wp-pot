@@ -12,10 +12,6 @@
 <td>Description</td>
 <td>Generate pot files for WordPress plugins and themes.</td>
 </tr>
-<tr>
-<td>Node Version</td>
-<td>>= 0.12</td>
-</tr>
 </table>
 
 The package gulp-sort is recommended to prevent unnecessary changes in pot-file
