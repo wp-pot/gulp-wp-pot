@@ -2,24 +2,17 @@
 
 ## Information
 
-[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/55c46add6537620020002f3c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c46add6537620020002f3c) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c0cb82ac2eae4c738d6929a23c6252a6)](https://www.codacy.com/app/rasmusbe/gulp-wp-pot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rasmusbe/gulp-wp-pot&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c0cb82ac2eae4c738d6929a23c6252a6)](https://www.codacy.com/app/rasmusbe/gulp-wp-pot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rasmusbe/gulp-wp-pot&amp;utm_campaign=Badge_Coverage)
+[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/55c46add6537620020002f3c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c46add6537620020002f3c) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)[![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)
 
-<table>
-<tr> 
-<td>Package</td><td>gulp-wp-pot</td>
-</tr>
-<tr>
-<td>Description</td>
-<td>Generate pot files for WordPress plugins and themes.</td>
-</tr>
-</table>
+| Package     | wp-pot                                   |
+| ----------- | ---------------------------------------- |
+| Description | Generate pot files for WordPress plugins and themes. |
 
-The package gulp-sort is recommended to prevent unnecessary changes in pot-file
 
 ## Install
 
 ```
-$ npm install --save-dev gulp-sort gulp-wp-pot
+$ npm install --save-dev gulp-wp-pot
 ```
 
 
@@ -28,71 +21,54 @@ $ npm install --save-dev gulp-sort gulp-wp-pot
 ```js
 var gulp = require('gulp');
 var wpPot = require('gulp-wp-pot');
-var sort = require('gulp-sort');
 
 gulp.task('default', function () {
     return gulp.src('src/*.php')
-        .pipe(sort())
         .pipe(wpPot( {
             domain: 'domain',
-            destFile:'file.pot',
-            package: 'package_name',
-            bugReport: 'http://example.com',
-            lastTranslator: 'John Doe <mail@example.com>',
-            team: 'Team Team <mail@example.com>'
+            package: 'Example project'
         } ))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('file.pot'));
 });
 ```
 
 
 ## wpPot({options})
 
-- `domain`
+*All options is optional*
 
-    Type: `string`  
-
-    Domain to retrieve the translated text. All textdomains is included if missing.
-
-- `destFile`
-
-    Type: `string`  
-    Default: *domain.pot* or translations.pot if domain is missing
-
-    Filename for template file
-
-
-- `package`
-
-    Type: `string`  
-    Default: *domain* or *unnamed project* if domain is missing
-
-    Package name
-
-- `bugReport`
-
-    Type: `URL`  
-
-    URL translatation support
-
-- `lastTranslator`
-
-    Type: `string`  
-
-    Name and email address of the last translator (ex: `John Doe <me@example.com>`)
-
-- `team`
-
-    Type: `string`  
-
-    Name and email address of the translation team (ex: `Team <team@example.com>`)
-
-- `headers`
-
-    Type: `object|bool`  
-    Default: Headers used by Poedit
-
-    Object containing extra POT-file headers. Set to false to not generate the default extra headers for Poedit.
+- `bugReport`  
+  Description: Header with URL for reporting translation bugs  
+  Type: `string`  
+  Default: undefined
+- `commentKeyword`  
+  Description: Keyword to trigger translator comment.  
+  Type: `string`  
+  Default: `translators:`
+- `domain`  
+  Description: Domain to retrieve the translated text. All textdomains is included if undefined.  
+  Type: `string`   
+  Default: undefined
+- `headers`  
+  Description: Object containing extra POT-file headers. Set to false to not generate the default extra headers for Poedit.  
+  Type: `object|bool`  
+  Default: Headers used by Poedit
+- `lastTranslator`  
+  Description: Name and email address of the last translator (ex: `John Doe <me@example.com>`)  
+  Type: `string`    
+  Default: undefined
+- `package`  
+  Description: Package name
+  Type: `string`  
+  Default: `domain` or `unnamed project` if domain is undefined
+- `relativeTo`  
+  Description: Path to folder that file comments should be relative to
+  Type: `string`  
+  Default: Current working directory
+- `team`  
+  Description: Name and email address of the translation team (ex: `Team <team@example.com> `)  
+  Type: `string`    
+  Default: undefined
 
 
 ## License
