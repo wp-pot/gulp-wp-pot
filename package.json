@@ -40,17 +40,17 @@
     "translation"
   ],
   "devDependencies": {
-    "eslint": "^3.11.1",
+    "eslint": "^3.12.1",
     "eslint-config-semistandard": "^7.0.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.0"
+    "mocha": "^3.2.0"
   },
   "dependencies": {
     "gulp-util": "^3.0.7",
-    "through2": "^2.0.1",
-    "wp-pot": "^0.0.2"
+    "through2": "^2.0.3",
+    "wp-pot": "^1.0.0"
   }
 }
