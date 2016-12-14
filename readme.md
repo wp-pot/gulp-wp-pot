@@ -58,11 +58,11 @@ gulp.task('default', function () {
   Type: `string`    
   Default: undefined
 - `package`  
-  Description: Package name
+  Description: Package name  
   Type: `string`  
   Default: `domain` or `unnamed project` if domain is undefined
 - `relativeTo`  
-  Description: Path to folder that file comments should be relative to
+  Description: Path to folder that file comments should be relative to  
   Type: `string`  
   Default: Current working directory
 - `team`  
