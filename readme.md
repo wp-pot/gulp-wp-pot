@@ -4,9 +4,9 @@
 
 [![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/584abc1adf01d500374be6b6/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/584abc1adf01d500374be6b6) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)
 
-| Package     | wp-pot                                   |
-| ----------- | ---------------------------------------- |
-| Description | Generate pot files for WordPress plugins and themes. |
+| Package     | gulp-wp-pot                                          |
+| ----------- | ---------------------------------------------------- |
+| Description | Gulp wrapper for [wp-pot](https://github.com/rasmusbe/wp-pot). Generates pot files for WordPress plugins and themes. |
 
 
 ## Install
@@ -70,6 +70,9 @@ gulp.task('default', function () {
   Type: `string`    
   Default: undefined
 
+## Related
+- [wp-pot](https://github.com/rasmusbe/wp-pot) - API for this module
+- [wp-pot-cli](https://github.com/rasmusbe/wp-pot-cli) - Run wp-pot via cli command
 
 ## License
 
