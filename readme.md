@@ -53,6 +53,10 @@ gulp.task('default', function () {
   Description: Object containing extra POT-file headers. Set to false to not generate the default extra headers for Poedit.  
   Type: `object|bool`  
   Default: Headers used by Poedit
+- `gettextFunctions`  
+  Description: Gettext functions used for finding translations.  
+  Type: `object`  
+  Default: WordPress translation functions
 - `lastTranslator`  
   Description: Name and email address of the last translator (ex: `John Doe <me@example.com>`)  
   Type: `string`    

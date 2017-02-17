@@ -540,11 +540,6 @@
       "resolved": "https://registry.npmjs.org/generate-object-property/-/generate-object-property-1.2.0.tgz",
       "dev": true
     },
-    "get-line-from-pos": {
-      "version": "1.0.0",
-      "from": "get-line-from-pos@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/get-line-from-pos/-/get-line-from-pos-1.0.0.tgz"
-    },
     "glob": {
       "version": "7.1.1",
       "from": "glob@>=7.0.3 <8.0.0",
@@ -562,9 +557,9 @@
       "resolved": "https://registry.npmjs.org/globby/-/globby-6.1.0.tgz",
       "dependencies": {
         "object-assign": {
-          "version": "4.1.0",
+          "version": "4.1.1",
           "from": "object-assign@>=4.0.1 <5.0.0",
-          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.0.tgz"
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
         }
       }
     },
@@ -1065,10 +1060,15 @@
       "resolved": "https://registry.npmjs.org/path-is-inside/-/path-is-inside-1.0.2.tgz",
       "dev": true
     },
+    "path-sort": {
+      "version": "0.1.0",
+      "from": "path-sort@>=0.1.0 <0.2.0",
+      "resolved": "https://registry.npmjs.org/path-sort/-/path-sort-0.1.0.tgz"
+    },
     "php-parser": {
-      "version": "1.0.2",
-      "from": "php-parser@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/php-parser/-/php-parser-1.0.2.tgz"
+      "version": "1.0.4",
+      "from": "php-parser@>=1.0.4 <2.0.0",
+      "resolved": "https://registry.npmjs.org/php-parser/-/php-parser-1.0.4.tgz"
     },
     "pify": {
       "version": "2.3.0",
@@ -1215,16 +1215,16 @@
       "resolved": "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz",
       "dev": true
     },
-    "string_decoder": {
-      "version": "0.10.31",
-      "from": "string_decoder@>=0.10.0 <0.11.0",
-      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
-    },
     "string-width": {
       "version": "1.0.2",
       "from": "string-width@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.2.tgz",
       "dev": true
+    },
+    "string_decoder": {
+      "version": "0.10.31",
+      "from": "string_decoder@>=0.10.0 <0.11.0",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
     },
     "strip-ansi": {
       "version": "3.0.1",
@@ -1386,9 +1386,9 @@
       "dev": true
     },
     "wp-pot": {
-      "version": "1.1.0",
-      "from": "wp-pot@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/wp-pot/-/wp-pot-1.1.0.tgz"
+      "version": "1.1.5",
+      "from": "wp-pot@1.1.5",
+      "resolved": "https://registry.npmjs.org/wp-pot/-/wp-pot-1.1.5.tgz"
     },
     "wrappy": {
       "version": "1.0.2",
