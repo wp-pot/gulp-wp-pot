@@ -22,7 +22,7 @@
     }
   ],
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=6"
   },
   "scripts": {
     "test": "npm run test-cs && npm run test-mocha",
@@ -40,17 +40,19 @@
     "translation"
   ],
   "devDependencies": {
-    "eslint": "^3.13.0",
+    "eslint": "^3.19.0",
     "eslint-config-semistandard": "^11.0.0",
     "eslint-config-standard": "^10.0.0",
-    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0"
+    "mocha": "^3.4.2"
   },
   "dependencies": {
     "gulp-util": "^3.0.8",
     "through2": "^2.0.3",
-    "wp-pot": "^1.1.5"
+    "wp-pot": "^1.2.0"
   }
 }

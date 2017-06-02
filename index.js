@@ -51,7 +51,7 @@ function gulpWPpot (options) {
     const potContents = wpPot(options);
 
     const potFile = new gutil.File({
-      contents: new Buffer(potContents),
+      contents: Buffer.from(potContents),
       path: '.'
     });
 
