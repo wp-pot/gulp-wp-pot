@@ -31,7 +31,7 @@ function gulpWPpot (options) {
     throw new PluginError('gulp-wp-pot', 'Require a argument of type object.');
   }
 
-  let files = [];
+  const files = [];
 
   const stream = through.obj(function (file, enc, cb) {
     if (file.isStream()) {

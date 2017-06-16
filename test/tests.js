@@ -10,14 +10,14 @@ const testHelper = require('./test-helper');
 
 describe('File write tests', function () {
   it('should generate a file', function (done) {
-    var fixturePath = 'test/fixtures/empty.php';
+    const fixturePath = 'test/fixtures/empty.php';
 
-    var testFile = new gutil.File({
+    const testFile = new gutil.File({
       path: fixturePath,
       contents: fs.readFileSync(fixturePath)
     });
 
-    let stream = gulpWpPot();
+    const stream = gulpWpPot();
     stream.once('data', function (file) {
       assert(file.isBuffer());
       done();
@@ -29,12 +29,12 @@ describe('File write tests', function () {
   it('should read a file correctly', function (done) {
     const fixturePath = 'test/fixtures/valid-functions.php';
 
-    var testFile = new gutil.File({
+    const testFile = new gutil.File({
       path: fixturePath,
       contents: fs.readFileSync(fixturePath)
     });
 
-    let stream = gulpWpPot({
+    const stream = gulpWpPot({
       src: fixturePath
     });
 
