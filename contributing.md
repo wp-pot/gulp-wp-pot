@@ -18,7 +18,7 @@ When you submit a bug issue you should try to be as detailed as possible in your
 
 Good pull requests with patches, improvements or new features is always welcome. They should remain focused in scope and avoid containing unrelated commits.
 
-**Please follow** the projects code style. The project code should be following the code style that is based on [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript/blob/master/README.md/).
+**Please follow** the projects code style. The project code should be following the code style that is based on [JavaScript Standard Style](https://standardjs.com/#the-rules) but with semicolons (semistandard).
 
 * Fork [gulp-wp-pot](https://github.com/rasmusbe/gulp-wp-pot) on Github and add the upstream remote.
 
