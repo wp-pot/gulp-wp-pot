@@ -4,15 +4,15 @@
 
 const assert = require('assert');
 const fs = require('fs');
-const gutil = require('gulp-util');
 const gulpWpPot = require('../');
 const testHelper = require('./test-helper');
+const Vinyl = require('vinyl');
 
 describe('File write tests', function () {
   it('should generate a file', function (done) {
     const fixturePath = 'test/fixtures/empty.php';
 
-    const testFile = new gutil.File({
+    const testFile = new Vinyl({
       path: fixturePath,
       contents: fs.readFileSync(fixturePath)
     });
@@ -29,7 +29,7 @@ describe('File write tests', function () {
   it('should read a file correctly', function (done) {
     const fixturePath = 'test/fixtures/valid-functions.php';
 
-    const testFile = new gutil.File({
+    const testFile = new Vinyl({
       path: fixturePath,
       contents: fs.readFileSync(fixturePath)
     });
