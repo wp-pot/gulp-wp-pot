@@ -2,11 +2,10 @@
 /** global: Buffer */
 'use strict';
 
-const gutil = require('gulp-util');
+const Vinyl = require('vinyl');
 const through = require('through2');
 const wpPot = require('wp-pot');
-
-const PluginError = gutil.PluginError;
+const PluginError = require('plugin-error');
 
 /**
  * Determine if `obj` is a object or not.
@@ -50,7 +49,7 @@ function gulpWPpot (options) {
 
     const potContents = wpPot(options);
 
-    const potFile = new gutil.File({
+    const potFile = new Vinyl({
       contents: Buffer.from(potContents),
       path: '.'
     });
