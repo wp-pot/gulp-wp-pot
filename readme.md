@@ -2,7 +2,7 @@
 
 ## Information
 
-[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Dependency Status](https://www.versioneye.com/user/projects/584abc1adf01d500374be6b6/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/584abc1adf01d500374be6b6) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)
+[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)
 
 | Package     | gulp-wp-pot                                          |
 | ----------- | ---------------------------------------------------- |
@@ -34,48 +34,8 @@ gulp.task('default', function () {
 
 
 ## wpPot({options})
-
-*All options is optional*
-
-- `bugReport`  
-  Description: Header with URL for reporting translation bugs  
-  Type: `string`  
-  Default: undefined
-- `commentKeyword`  
-  Description: Keyword to trigger translator comment.  
-  Type: `string`  
-  Default: `translators:`
-- `domain`  
-  Description: Domain to retrieve the translated text. All textdomains is included if undefined.  
-  Type: `string`   
-  Default: undefined
-- `headers`  
-  Description: Object containing extra POT-file headers. Set to false to not generate the default extra headers for Poedit.  
-  Type: `object|bool`  
-  Default: Headers used by Poedit
-- `gettextFunctions`  
-  Description: Gettext functions used for finding translations.  
-  Type: `object`  
-  Default: WordPress translation functions
-- `lastTranslator`  
-  Description: Name and email address of the last translator (ex: `John Doe <me@example.com>`)  
-  Type: `string`    
-  Default: undefined
-- `metadataFile`  
-  Description: Path to file containing plugin/theme metadata header relative to `relativeTo`  
-  Type: `string`  
-- `package`  
-  Description: Package name  
-  Type: `string`  
-  Default: `domain` or `unnamed project` if domain is undefined
-- `relativeTo`  
-  Description: Path to folder that file comments should be relative to  
-  Type: `string`  
-  Default: Current working directory
-- `team`  
-  Description: Name and email address of the translation team (ex: `Team <team@example.com> `)  
-  Type: `string`    
-  Default: undefined
+See available options in the wp-pot readme, https://github.com/rasmusbe/wp-pot#options
+All options except src and writeFile is passed to wp-pot.
 
 ## Related
 - [wp-pot](https://github.com/rasmusbe/wp-pot) - API for this module
