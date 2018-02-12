@@ -47,14 +47,17 @@ function gulpWPpot (options) {
     options.src = files;
     options.writeFile = false;
 
-    const potContents = wpPot(options);
+    try {
+      const potContents = wpPot(options);
+      const potFile = new Vinyl({
+        contents: Buffer.from(potContents),
+        path: '.'
+      });
+      this.push(potFile);
+    } catch (error) {
+      throw new PluginError('gulp-wp-pot', error);
+    }
 
-    const potFile = new Vinyl({
-      contents: Buffer.from(potContents),
-      path: '.'
-    });
-
-    this.push(potFile);
     cb();
   });
 
