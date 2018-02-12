@@ -34,7 +34,7 @@ gulp.task('default', function () {
 
 
 ## wpPot({options})
-See available options in the wp-pot readme, https://github.com/rasmusbe/wp-pot#options
+See available options in the wp-pot readme, https://github.com/rasmusbe/wp-pot#options  
 All options except src and writeFile is passed to wp-pot.
 
 ## Related
