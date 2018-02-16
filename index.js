@@ -34,7 +34,7 @@ function gulpWPpot (options) {
 
   const stream = through.obj(function (file, enc, cb) {
     if (file.isStream()) {
-      throw new PluginError('gulp-wp-pot', 'Streams are not supported.');
+      this.emit('error', new PluginError('gulp-wp-pot', 'Streams are not supported.'));
     }
 
     files.push(file.path);
@@ -53,12 +53,14 @@ function gulpWPpot (options) {
         contents: Buffer.from(potContents),
         path: '.'
       });
-      this.push(potFile);
-    } catch (error) {
-      throw new PluginError('gulp-wp-pot', error);
-    }
 
-    cb();
+      this.push(potFile);
+      this.emit('end');
+
+      cb();
+    } catch (error) {
+      this.emit('error', new PluginError('gulp-wp-pot', error));
+    }
   });
 
   return stream;
