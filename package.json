@@ -1,6 +1,6 @@
 {
   "name": "gulp-wp-pot",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Generate pot-files for WordPress localization via gulp",
   "license": "MIT",
   "repository": "rasmusbe/gulp-wp-pot",
