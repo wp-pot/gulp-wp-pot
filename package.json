@@ -51,7 +51,7 @@
     "event-stream": "^4.0.1",
     "greenkeeper-lockfile": "^1.15.1",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0"
+    "mocha": "^6.0.0"
   },
   "dependencies": {
     "plugin-error": "^1.0.1",
