@@ -2,7 +2,7 @@
 
 ## Information
 
-[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.org/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.org/rasmusbe/gulp-wp-pot) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)
+[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![Build Status](https://travis-ci.com/rasmusbe/gulp-wp-pot.svg?branch=master)](https://travis-ci.com/rasmusbe/gulp-wp-pot) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master)
 
 | Package     | gulp-wp-pot                                          |
 | ----------- | ---------------------------------------------------- |
