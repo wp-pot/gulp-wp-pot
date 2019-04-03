@@ -8,6 +8,9 @@
 | ----------- | ---------------------------------------------------- |
 | Description | Gulp wrapper for [wp-pot](https://github.com/rasmusbe/wp-pot). Generates pot files for WordPress plugins and themes. |
 
+## Like my work and want to say thanks?
+Do it here:  
+<a href="https://www.buymeacoffee.com/rasmus" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 ## Install
 
