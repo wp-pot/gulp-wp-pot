@@ -17,44 +17,44 @@ const assert = require('assert');
 function verifyLanguageBlock (potContents, comment, fileinfo, msgid, plural, context) {
   const blocks = potContents.split('\n\n');
   for (let i = 1; i < blocks.length; i++) {
-    const blocklines = blocks[ i ].split('\n');
+    const blocklines = blocks[i].split('\n');
     let fileinfoLine = 0;
 
-    if (comment && blocks[ i ].indexOf('#. ' + comment) === -1) {
+    if (comment && blocks[i].indexOf('#. ' + comment) === -1) {
       continue;
     } else if (comment) {
       fileinfoLine++;
     }
 
     // Check if correct file
-    if (fileinfo && blocklines[ fileinfoLine ].indexOf(fileinfo) === -1) {
+    if (fileinfo && blocklines[fileinfoLine].indexOf(fileinfo) === -1) {
       continue;
     }
 
     // Check if msgid is correct
-    if (msgid && blocks[ i ].indexOf('msgid "' + msgid + '"\n') === -1) {
+    if (msgid && blocks[i].indexOf('msgid "' + msgid + '"\n') === -1) {
       continue;
     }
 
     // Check if plural msgid is correct
-    if (plural && blocks[ i ].indexOf('msgid_plural "' + plural + '"\n') === -1) {
+    if (plural && blocks[i].indexOf('msgid_plural "' + plural + '"\n') === -1) {
       continue;
-    } else if (!plural && blocks[ i ].indexOf('msgid_plural') !== -1) {
+    } else if (!plural && blocks[i].indexOf('msgid_plural') !== -1) {
       continue;
     }
 
     // Check if context is correct
-    if (context && blocks[ i ].indexOf('msgctxt "' + context + '"\n') === -1) {
+    if (context && blocks[i].indexOf('msgctxt "' + context + '"\n') === -1) {
       continue;
-    } else if (!context && blocks[ i ].indexOf('msgctxt') !== -1) {
+    } else if (!context && blocks[i].indexOf('msgctxt') !== -1) {
       continue;
     }
 
     // Check if msgstr is correct when plural
-    if (plural && blocks[ i ].indexOf('msgstr[0] ""\n') === -1 && blocks[ i ].indexOf('msgstr[1] ""\n') === -1 && blocks[ i ].indexOf('msgstr ""\n') !== -1) {
+    if (plural && blocks[i].indexOf('msgstr[0] ""\n') === -1 && blocks[i].indexOf('msgstr[1] ""\n') === -1 && blocks[i].indexOf('msgstr ""\n') !== -1) {
       continue;
       // Check if msgstr is correct when singular
-    } else if (!plural && blocks[ i ].indexOf('msgstr[0] ""\n') !== -1 && blocks[ i ].indexOf('msgstr[1] ""\n') !== -1 && blocks[ i ].indexOf('msgstr ""\n') === -1) {
+    } else if (!plural && blocks[i].indexOf('msgstr[0] ""\n') !== -1 && blocks[i].indexOf('msgstr[1] ""\n') !== -1 && blocks[i].indexOf('msgstr ""\n') === -1) {
       continue;
     }
 
