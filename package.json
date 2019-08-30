@@ -3,10 +3,11 @@
   "version": "2.3.5",
   "description": "Generate pot-files for WordPress localization via gulp",
   "license": "MIT",
-  "repository": "rasmusbe/gulp-wp-pot",
+  "repository": "https://github.com/wp-pot/gulp-wp-pot.git",
+  "homepage": "https://github.com/wp-pot/gulp-wp-pot",
+  "bugs": "https://github.com/wp-pot/gulp-wp-pot/issues",
   "author": {
     "name": "Rasmus Bengtsson",
-    "email": "gulp-wp-pot@rasmusbengtsson.se",
     "url": "https://github.com/rasmusbe"
   },
   "contributors": [

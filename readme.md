@@ -2,12 +2,12 @@
 
 ## Information
 
-[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![CircleCI](https://circleci.com/gh/rasmusbe/gulp-wp-pot.svg?style=svg)](https://circleci.com/gh/rasmusbe/gulp-wp-pot) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/rasmusbe/gulp-wp-pot/?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/rasmusbe/gulp-wp-pot.svg)](https://greenkeeper.io/)
+[![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![CircleCI](https://circleci.com/gh/wp-pot/gulp-wp-pot.svg?style=svg)](https://circleci.com/gh/wp-pot/gulp-wp-pot) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/wp-pot/gulp-wp-pot.svg)](https://greenkeeper.io/)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwp-pot%2Fgulp-wp-pot.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwp-pot%2Fgulp-wp-pot?ref=badge_shield)
 
 | Package     | gulp-wp-pot                                          |
 | ----------- | ---------------------------------------------------- |
-| Description | Gulp wrapper for [wp-pot](https://github.com/rasmusbe/wp-pot). Generates pot files for WordPress plugins and themes. |
+| Description | Gulp wrapper for [wp-pot](https://github.com/wp-pot/wp-pot). Generates pot files for WordPress plugins and themes. |
 
 ## Like my work and want to say thanks?
 Do it here:  
@@ -38,12 +38,12 @@ gulp.task('default', function () {
 
 
 ## wpPot({options})
-See available options in the wp-pot readme, https://github.com/rasmusbe/wp-pot#options  
+See available options in the wp-pot readme, https://github.com/wp-pot/wp-pot#options  
 All options except src and writeFile is passed to wp-pot.
 
 ## Related
-- [wp-pot](https://github.com/rasmusbe/wp-pot) - API for this module
-- [wp-pot-cli](https://github.com/rasmusbe/wp-pot-cli) - Run wp-pot via cli command
+- [wp-pot](https://github.com/wp-pot/wp-pot) - API for this module
+- [wp-pot-cli](https://github.com/wp-pot/wp-pot-cli) - Run wp-pot via cli command
 
 ## License
 
