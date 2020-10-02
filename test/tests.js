@@ -7,7 +7,18 @@ const gulpWpPot = require('../');
 const testHelper = require('./test-helper');
 const Vinyl = require('vinyl');
 const PluginError = require('plugin-error');
-const es = require('event-stream');
+const { Readable } = require('stream');
+
+const getFileStream = (files) => {
+  return new Readable({
+    read () {
+      files.forEach((file) => {
+        this.emit('data', file);
+      });
+      this.emit('end');
+    }
+  });
+};
 
 describe('File write tests', function () {
   it('should generate a file', function (done) {
@@ -18,7 +29,9 @@ describe('File write tests', function () {
       contents: fs.readFileSync(fixturePath)
     });
 
-    es.readArray([testFile])
+    const stream = getFileStream([testFile]);
+
+    stream
       .pipe(gulpWpPot())
       .on('error', function (error) {
         done(error);
@@ -43,7 +56,9 @@ describe('File write tests', function () {
       contents: fs.readFileSync(fixturePath2)
     });
 
-    es.readArray([testFile, testFile2])
+    const stream = getFileStream([testFile, testFile2]);
+
+    stream
       .pipe(gulpWpPot({
         src: fixturePath
       }))
@@ -74,7 +89,9 @@ describe('Error handling', function () {
       contents: fs.createReadStream(fixturePath)
     });
 
-    es.readArray([testFile])
+    const stream = getFileStream([testFile]);
+
+    stream
       .pipe(gulpWpPot())
       .on('error', function () {
         done();
@@ -92,7 +109,9 @@ describe('Error handling', function () {
       contents: fs.readFileSync(fixturePath)
     });
 
-    es.readArray([testFile])
+    const stream = getFileStream([testFile]);
+
+    stream
       .pipe(gulpWpPot())
       .on('error', function () {
         done();
