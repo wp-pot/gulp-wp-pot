@@ -3,7 +3,6 @@
 ## Information
 
 [![npm version](https://badge.fury.io/js/gulp-wp-pot.svg)](https://www.npmjs.com/package/gulp-wp-pot) [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/wp-pot/gulp-wp-pot/Node%20CI/master)](https://github.com/wp-pot/gulp-wp-pot/actions) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wp-pot/gulp-wp-pot/?branch=master) 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwp-pot%2Fgulp-wp-pot.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwp-pot%2Fgulp-wp-pot?ref=badge_shield)
 
 | Package     | gulp-wp-pot                                          |
 | ----------- | ---------------------------------------------------- |
@@ -48,6 +47,3 @@ All options except src and writeFile is passed to wp-pot.
 ## License
 
 MIT © [Rasmus Bengtsson](https://github.com/rasmusbe) | Initial work by [Willy Bahuaud](https://github.com/willybahuaud)
-
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwp-pot%2Fgulp-wp-pot.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwp-pot%2Fgulp-wp-pot?ref=badge_large)
