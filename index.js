@@ -3,9 +3,9 @@
 'use strict';
 
 const Vinyl = require('vinyl');
-const through = require('through2');
 const wpPot = require('wp-pot');
 const PluginError = require('plugin-error');
+const { Transform } = require('stream');
 
 /**
  * Determine if `obj` is a object or not.
@@ -32,38 +32,41 @@ function gulpWPpot (options) {
 
   const files = [];
 
-  const stream = through.obj(function (file, enc, cb) {
-    if (file.isStream()) {
-      this.emit('error', new PluginError('gulp-wp-pot', 'Streams are not supported.'));
-    }
+  const transformer = new Transform({
+    objectMode: true,
+    transform (file, encoding, done) {
+      if (file.isStream()) {
+        done('error', new PluginError('gulp-wp-pot', 'Streams are not supported.'));
+        return;
+      }
 
-    files.push(file.path);
-    cb();
-  }, function (cb) {
-    if (!options) {
-      options = {};
-    }
+      files.push(file.path);
+      done();
+    },
+    flush (done) {
+      if (!options) {
+        options = {};
+      }
 
-    options.src = files;
-    options.writeFile = false;
+      options.src = files;
+      options.writeFile = false;
 
-    try {
-      const potContents = wpPot(options);
-      const potFile = new Vinyl({
-        contents: Buffer.from(potContents),
-        path: '.'
-      });
+      try {
+        const potContents = wpPot(options);
+        const potFile = new Vinyl({
+          contents: Buffer.from(potContents),
+          path: '.'
+        });
 
-      this.push(potFile);
-      this.emit('end');
-
-      cb();
-    } catch (error) {
-      this.emit('error', new PluginError('gulp-wp-pot', error));
+        this.push(potFile);
+        done();
+      } catch (error) {
+        done('error', new PluginError('gulp-wp-pot', error));
+      }
     }
   });
 
-  return stream;
+  return transformer;
 }
 
 module.exports = gulpWPpot;

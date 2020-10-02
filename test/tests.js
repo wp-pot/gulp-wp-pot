@@ -31,13 +31,19 @@ describe('File write tests', function () {
 
   it('should read a file correctly', function (done) {
     const fixturePath = 'test/fixtures/valid-functions.php';
+    const fixturePath2 = 'test/fixtures/valid-functions-copy.php';
 
     const testFile = new Vinyl({
       path: fixturePath,
       contents: fs.readFileSync(fixturePath)
     });
 
-    es.readArray([testFile])
+    const testFile2 = new Vinyl({
+      path: fixturePath2,
+      contents: fs.readFileSync(fixturePath2)
+    });
+
+    es.readArray([testFile, testFile2])
       .pipe(gulpWpPot({
         src: fixturePath
       }))
@@ -46,6 +52,7 @@ describe('File write tests', function () {
       })
       .on('data', function (file) {
         const potContents = file.contents.toString();
+
         testHelper.testValidFunctions(potContents, fixturePath);
         done();
       });
