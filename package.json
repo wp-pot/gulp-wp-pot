@@ -43,7 +43,7 @@
   ],
   "devDependencies": {
     "eslint": "^7.22.0",
-    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-semistandard": "^16.0.0",
     "eslint-config-standard": "^16.0.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
