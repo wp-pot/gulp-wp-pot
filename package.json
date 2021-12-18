@@ -42,12 +42,12 @@
     "translation"
   ],
   "devDependencies": {
-    "eslint": "^7.22.0",
+    "eslint": "^8.0.0",
     "eslint-config-semistandard": "^16.0.0",
     "eslint-config-standard": "^16.0.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.0.0",
+    "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "mocha": "^8.1.3",
     "nyc": "^15.0.1"
