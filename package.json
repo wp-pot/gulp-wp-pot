@@ -23,12 +23,12 @@
     }
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "scripts": {
     "test": "npm run test-cs && npm run test-mocha",
-    "test-cs": "eslint .",
-    "fix-cs": "eslint . --fix",
+    "test-cs": "semistandard .",
+    "fix-cs": "semistandard . --fix",
     "test-mocha": "mocha",
     "cover": "nyc --reporter clover npm run test-mocha"
   },
@@ -42,19 +42,16 @@
     "translation"
   ],
   "devDependencies": {
-    "eslint": "^7.22.0",
-    "eslint-config-semistandard": "^16.0.0",
-    "eslint-config-standard": "^16.0.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.0.0",
-    "eslint-plugin-standard": "^5.0.0",
-    "mocha": "^8.1.3",
-    "nyc": "^15.0.1"
+    "mocha": "^9.2.0",
+    "nyc": "^15.0.1",
+    "semistandard": "^16.0.1"
   },
   "dependencies": {
     "plugin-error": "^1.0.1",
     "vinyl": "^2.2.1",
-    "wp-pot": "^1.9.6"
+    "wp-pot": "^1.10.0"
+  },
+  "volta": {
+    "node": "14.19.0"
   }
 }
