@@ -61,7 +61,7 @@ function gulpWPpot (options) {
         this.push(potFile);
         done();
       } catch (error) {
-        done('error', new PluginError('gulp-wp-pot', error));
+        done(error, new PluginError('gulp-wp-pot', error));
       }
     }
   });
